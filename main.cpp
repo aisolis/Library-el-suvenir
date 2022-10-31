@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "classes/loginForm.h"
+#include "classes/modules/adminModule/adminPanel.h"
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 
@@ -12,17 +13,27 @@ int main(int argc, char** argv) {
 	LoginForm lf = LoginForm();
 	
 	switch(lf.initializeLogin()){
-		case 0:
+		case 0:{
 			system("CLS");
-		break;
+			AdminPanel ap1 = AdminPanel();
+ 			//ap1.displayPanelAdmin();
+			break;
+		}
 		
-		case 1:
+		case 1:{
 			system("CLS");
-		break;
+			AdminPanel ap2 = AdminPanel();
+			ap2.setlogedUser(lf.getUserLoged());
+ 			ap2.displayPanelAdmin();
+			break;
+		}
 		
-		case 2:
+		case 2:{
 			system("CLS");
-		break;
+			AdminPanel ap3 = AdminPanel();
+ 			//ap3.displayPanelAdmin();
+			break;
+		}
 		
 		default:
 			system("CLS");

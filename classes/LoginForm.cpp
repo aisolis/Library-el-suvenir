@@ -1,6 +1,7 @@
 #include "LoginForm.h"
 #include "User.h"
-#include "..\\classes\\BinFilesHandler.h"
+#include "BinFilesHandler.h"
+#include "modules\\adminModule\\AdminPanel.h"
 
 #include <iostream>
 #include <sstream>
@@ -87,6 +88,7 @@ reset:
 	cout << "| Usuario:                                                               |" << endl;
 	cout << "| Password:                                                              |" << endl;
 	cout << "|                                                                        |" << endl;
+	cout << "+----------------------------------------------------------------------- +" << endl;
 	cout << "| Para ingresar presiona enter...                                        |" << endl;
 	cout << "+------------------------------------------------------------------------+" << endl;
 	
@@ -125,19 +127,26 @@ reset:
  	User aux = bh.searchUser(username);
  	
  	if(aux.getPwd() == verifypwdHash(pwd)){
+ 		LoginForm::userLoged = aux.getUser();
  		switch(aux.getRol()){
  			
- 			case 0:
+ 			case 0:{
  				LoginForm::userPermission = 0;
- 			break;
+ 				break;
+ 			}
  			
- 			case 1:
+ 			case 1:{
  				LoginForm::userPermission = 1;
- 			break;
+
+				break;
+			 }
  			
- 			case 2:
+ 			case 2:{
  				LoginForm::userPermission = 2;
- 			break;
+
+				break;
+			 }
+			
 		 }
  		return true;
 	 }else{
@@ -169,7 +178,9 @@ reset:
 }
 
 
-
+string LoginForm::getUserLoged(){
+	return userLoged;
+}
 
 
 

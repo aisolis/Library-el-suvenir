@@ -11,10 +11,12 @@ class LoginForm
 	public:
 		LoginForm();
 		int initializeLogin();
+		string getUserLoged();
 	private:
 		bool loginUser(string,string);
 		string verifypwdHash(string);
 		int userPermission;
+		string userLoged;
 };
 
 #endif
