@@ -7,11 +7,12 @@
 #include <unistd.h>
 #include <conio.h>
 #include <windows.h>
+#include <vector>
 
 Book::Book(){
 }
 
-Book::Book(string title, string _autor, string desc, string _editorial, int publicYear, int pages, int _stock, int hash, bool borrowed, string borrowDate){
+Book::Book(string title, string _autor, vector<string> desc, string _editorial, int publicYear, int pages, int _stock, int hash, bool borrowed, string borrowDate){
 	Book::bookTitle = title;
 	Book::autor = _autor;
 	Book::description = desc;	
@@ -40,11 +41,11 @@ string Book::getAutor(){
 	return Book::autor;
 }
 
-void Book::setDescription(string desc){
+void Book::setDescription(vector<string> desc){
 	Book::description = desc;
 }
 
-string Book::getDescription(){
+vector<string> Book::getDescription(){
 	return Book::description;
 }
 

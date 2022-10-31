@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -14,7 +15,9 @@ class InventoryModule
 		void deleteEntryOfInventory();
 		void searchEntryOfInventory();
 		void displayAllEntrys();
-	protected:
+	private:
+		void validateForm(string, string, vector<string>, string, string, string, string);
+		void fixFormData(bool, bool, bool, bool, bool, bool, bool, string, string, vector<string>, string, string, string, string);
 };
 
 #endif

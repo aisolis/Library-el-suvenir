@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ class Book
 {
 	public:
 		Book();
-		Book(string,string,string,string,int,int,int,int,bool,string);
+		Book(string,string,vector<string>,string,int,int,int,int,bool,string);
 		
 		void setBookTitle(string);
 		string getBookTitle();
@@ -18,8 +19,8 @@ class Book
 		void setAutor(string);
 		string getAutor();
 		
-		void setDescription(string);
-		string getDescription();
+		void setDescription(vector<string>);
+		vector<string> getDescription();
 		
 		void setEditorial(string);
 		string getEditorial();
@@ -45,7 +46,7 @@ class Book
 	private:
 		string bookTitle;
 		string autor;
-		string description;
+		vector<string> description;
 		string editorial;
 		int publicationYear;
 		int pagesNumbers;
