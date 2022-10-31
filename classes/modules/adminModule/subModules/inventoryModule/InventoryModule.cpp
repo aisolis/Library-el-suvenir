@@ -43,6 +43,46 @@ InventoryModule::InventoryModule(){
 	
 }
 
+void InventoryModule::displayModule(){
+	char optionMenu;
+
+	system("CLS");
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                                  BIBLIOTECA EL PORVENIR                                             |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                                  MODULO DE INVENTARIOS                                              |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Bienvenido nuevamente estimado Administrador                                                                        |" << endl;
+		cout << "| Por favor elija una opcion del siguiente menu:                                                                      |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "| 1) Agregar un registro al inventario                                                                                |" << endl;
+		cout << "| 2) Listar todos los registros                                                                                       |" << endl;
+		cout << "| 3) Editar un registro                                                                                               |" << endl;
+		cout << "| 4) Eliminar un registro                                                                                             |" << endl;
+		cout << "| 5) Regresar al menu anterior                                                                                        |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Para ingresar presiona enter...                                                                                     |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Su opcion:                                                                                                          |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+
+		invGotoxy(28,13);
+		cin >> optionMenu;
+
+		switch(optionMenu){
+			case 1:{
+					addEntryToInventory()
+				break;
+			}
+
+			case 2:{
+				
+				break;
+			}
+		}
+}
+
 void InventoryModule::addEntryToInventory(){
 	
 	

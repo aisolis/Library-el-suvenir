@@ -15,6 +15,7 @@ class InventoryModule
 		void deleteEntryOfInventory();
 		void searchEntryOfInventory();
 		void displayAllEntrys();
+		void displayModule();
 	private:
 		void validateForm(string, string, vector<string>, string, string, string, string);
 		void fixFormData(bool, bool, bool, bool, bool, bool, bool, string, string, vector<string>, string, string, string, string);
