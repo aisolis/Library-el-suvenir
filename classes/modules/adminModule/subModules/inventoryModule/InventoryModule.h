@@ -9,6 +9,7 @@ using namespace std;
 class InventoryModule
 {
 	public:
+		InventoryModule();
 		void addEntryToInventory();
 		void deleteEntryOfInventory();
 		void searchEntryOfInventory();

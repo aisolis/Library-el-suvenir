@@ -1,4 +1,5 @@
 #include "AdminPanel.h"
+#include "subModules/inventoryModule/InventoryModule.h"
 
 #include <iostream>
 #include <sstream>
@@ -55,7 +56,9 @@ resetPanel:
 	
 	switch(option){
 		case 1:{
-	
+			InventoryModule im = InventoryModule();
+			
+			im.addEntryToInventory();
 			break;
 		}
 		
