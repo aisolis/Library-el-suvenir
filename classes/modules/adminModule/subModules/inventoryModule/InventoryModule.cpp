@@ -1,5 +1,6 @@
 #include "InventoryModule.h"
 #include "../../../../Book.h"
+#include "../../../../BinFilesHandler.h"
 
 #include <iostream>
 #include <sstream>
@@ -249,6 +250,24 @@ void InventoryModule::validateForm(string title, string autor, vector<string> de
 	}else{
 		invGotoxy(87,16);
 		cout << "VALIDO";
+		BinFilesHandler bfh = BinFilesHandler();
+
+		char opt2;
+
+		if(bfh.writeOnInventory(book)){
+			invGotoxy(0,16);
+			cout << "| Libro agregado al inventario con exito, agregar otro? S/N:              | FORMULARIO:  FINALIZADO   |";
+
+			invGotoxy(61,16);
+			cin >> opt2;
+
+			if(toupper(opt2) == 'S' || tolower(opt2) == 's'){
+				invGotoxy(0,0);
+				InventoryModule::addEntryToInventory();
+			}
+		}
+
+	
 	}
 	
 }
@@ -266,9 +285,10 @@ void InventoryModule::fixFormData(bool title, bool autor, bool desc, bool editor
 	char optionFix;
 	int counterFix;
 
+	cin.ignore();
+
 	if(title){
 		invGotoxy(20,5);
-		cin.ignore();
 		getline(cin, titleFix);
 	}else{
 		titleFix = a;
@@ -331,5 +351,13 @@ void InventoryModule::fixFormData(bool title, bool autor, bool desc, bool editor
 		InventoryModule::validateForm(titleFix, autorFix, descVector, editorialFix, anioFix, pagesFix, stockFix);
 	}
 
+}
+
+void InventoryModule::displayAllEntrys(){
+	BinFilesHandler bfh = BinFilesHandler();
+
+	vector<Book> tmp = bfh.readALLInventory();
+
+	cout << tmp.size() << endl;
 }
 

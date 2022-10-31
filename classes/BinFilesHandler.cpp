@@ -1,9 +1,13 @@
-#include <fstream>
-#include <iomanip>
-#include <cstring>
-#include <cstdlib>
 #include <iostream>
-#include <string.h>
+#include <sstream>
+#include <string> 
+#include <cstdlib>
+#include <unistd.h>
+#include <conio.h>
+#include <windows.h>
+#include <vector>
+#include <algorithm>
+#include <fstream>
 
 #include "BinFilesHandler.h"
 #include "User.h"
@@ -76,12 +80,14 @@ int BinFilesHandler::verifyHash (string str) {
 bool BinFilesHandler::writeOnInventory(Book book){
 	book.setHashCode(verifyHash(book.getBookTitle()));
 	book.setIsBorrowed(false);
-	book.setBorrowedDate("");
+	book.setBorrowedDate("sin prestar");
 
 	try{
-		fstream fh("libraryFiles\\inventory.csv", ios::out | ios::in | ios::app);
+		fstream fh("libraryFiles\\inventory.csv");
 		if(fh.is_open()){
-			fh << book.getBookTitle() << "," <<  book.getAutor() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << endl;
+			vector<Book> offset = readALLInventory();
+			fh.seekg((offset.size()+1)*sizeof(Book));
+			fh << book.getBookTitle() << "," <<  book.getAutor() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << std::endl;
 			fh.close();
 			return true;
 		}else{
@@ -93,4 +99,72 @@ bool BinFilesHandler::writeOnInventory(Book book){
 	}
 
 	return true;
+}
+
+vector<Book> BinFilesHandler::readALLInventory(){
+	vector<Book> books;
+	try{
+		fstream fh("libraryFiles\\inventory.csv");
+		if(fh.is_open()){
+			std::string line;
+			
+			while(getline(fh,line)){
+
+				std::string bookTitle;
+				std::string autor;
+				std::string description;
+				std::string editorial;
+				std::string tpublicationYear;
+				std::string tpagesNumbers;
+				std::string tstock;
+				std::string thashcode;
+				std::string tborrowed;
+				
+				int publicationYear;
+				int pagesNumbers;
+				int stock;
+				int hashcode;
+				int borrowedBool;
+				bool isBorrowed;
+				std::string borrowedDate;
+
+				getline(fh,bookTitle,',');
+				getline(fh,autor,',');
+				getline(fh,description,',');
+				getline(fh,tpublicationYear,',');
+				getline(fh,tpagesNumbers,',');
+				getline(fh,tstock,',');
+				getline(fh,thashcode,',');
+				getline(fh,tborrowed,',');
+				getline(fh,borrowedDate,',');
+
+				std::istringstream (tpublicationYear) >> publicationYear;
+				std::istringstream (tpagesNumbers) >> pagesNumbers;
+				std::istringstream (tstock) >> stock;
+				std::istringstream (thashcode) >> hashcode;
+				std::istringstream (tborrowed) >> borrowedBool;
+				
+				if(borrowedBool == 0){
+					isBorrowed = false;
+				}else{
+					isBorrowed = true;
+				}
+
+				vector<string> temps;
+
+				temps.push_back(description);
+
+				Book book = Book(bookTitle,autor,temps,editorial,publicationYear,pagesNumbers,stock,hashcode,isBorrowed,borrowedDate);
+				books.push_back(book);
+
+			}
+			fh.close();
+			return books;
+		}else{
+			throw (999);
+		}	
+
+	}catch(bool ex){
+		return books;
+	}
 }

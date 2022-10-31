@@ -15,6 +15,7 @@ class BinFilesHandler
 		User searchUser(User);
 		bool writeUserFile(User);
 		bool writeOnInventory(Book);
+		vector<Book> readALLInventory();
 	private:
 		verifyHash(string);
 };

@@ -63,6 +63,8 @@ resetPanel:
 		}
 		
 		case 2:{
+			InventoryModule im = InventoryModule();
+			im.displayAllEntrys();
 			break;
 		}
 		

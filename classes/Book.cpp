@@ -53,7 +53,7 @@ string Book::getLinealDescription(){
 	std::string output;
 
 	for (std::string &s: description){
-        output = output + s + "\n";
+        output = output + s + " ";
     }
 
 	return output;
