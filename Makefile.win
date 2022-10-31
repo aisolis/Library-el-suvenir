@@ -4,13 +4,13 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o classes/LoginForm.o classes/User.o classes/BinFilesHandler.o
-LINKOBJ  = main.o classes/LoginForm.o classes/User.o classes/BinFilesHandler.o
+OBJ      = main.o classes/BinFilesHandler.o classes/LoginForm.o classes/User.o
+LINKOBJ  = main.o classes/BinFilesHandler.o classes/LoginForm.o classes/User.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
 BIN      = biblioteca.exe
-CXXFLAGS = $(CXXINCS) -std=c++0x
+CXXFLAGS = $(CXXINCS) 
 CFLAGS   = $(INCS) 
 RM       = rm.exe -f
 
@@ -27,11 +27,11 @@ $(BIN): $(OBJ)
 main.o: main.cpp
 	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
 
+classes/BinFilesHandler.o: classes/BinFilesHandler.cpp
+	$(CPP) -c classes/BinFilesHandler.cpp -o classes/BinFilesHandler.o $(CXXFLAGS)
+
 classes/LoginForm.o: classes/LoginForm.cpp
 	$(CPP) -c classes/LoginForm.cpp -o classes/LoginForm.o $(CXXFLAGS)
 
 classes/User.o: classes/User.cpp
 	$(CPP) -c classes/User.cpp -o classes/User.o $(CXXFLAGS)
-
-classes/BinFilesHandler.o: classes/BinFilesHandler.cpp
-	$(CPP) -c classes/BinFilesHandler.cpp -o classes/BinFilesHandler.o $(CXXFLAGS)
