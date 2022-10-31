@@ -21,6 +21,7 @@ class Book
 		
 		void setDescription(vector<string>);
 		vector<string> getDescription();
+		string getLinealDescription();
 		
 		void setEditorial(string);
 		string getEditorial();
@@ -38,7 +39,7 @@ class Book
 		int getHashCode();
 		
 		void setIsBorrowed(bool);
-		bool IsBorrowed();
+		bool getIsBorrowed();
 		
 		void setBorrowedDate(string);
 		string getBorrowedDate();

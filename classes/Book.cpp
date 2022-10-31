@@ -49,6 +49,16 @@ vector<string> Book::getDescription(){
 	return Book::description;
 }
 
+string Book::getLinealDescription(){
+	std::string output;
+
+	for (std::string &s: description){
+        output = output + s + "\n";
+    }
+
+	return output;
+}
+
 void Book::setEditorial(string editorialName){
 	Book::editorial = editorialName;
 }
@@ -93,7 +103,7 @@ void Book::setIsBorrowed(bool borrowed){
 	Book::isBorrowed = borrowed;
 }
 
-bool Book::IsBorrowed(){
+bool Book::getIsBorrowed(){
 	return Book::isBorrowed;
 }
 

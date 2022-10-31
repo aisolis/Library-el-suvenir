@@ -71,3 +71,26 @@ int BinFilesHandler::verifyHash (string str) {
 	}
     return h;
 }
+
+
+bool BinFilesHandler::writeOnInventory(Book book){
+	book.setHashCode(verifyHash(book.getBookTitle()));
+	book.setIsBorrowed(false);
+	book.setBorrowedDate("");
+
+	try{
+		fstream fh("libraryFiles\\inventory.csv", ios::out | ios::in | ios::app);
+		if(fh.is_open()){
+			fh << book.getBookTitle() << "," <<  book.getAutor() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << endl;
+			fh.close();
+			return true;
+		}else{
+			throw (999);
+		}	
+
+	}catch(bool ex){
+		return false;
+	}
+
+	return true;
+}
