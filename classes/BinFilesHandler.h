@@ -2,6 +2,7 @@
 #define BINFILESHANDLER_H
 
 #include <iostream>
+#include <vector>
 
 #include "User.h"
 #include "Book.h"
@@ -15,9 +16,11 @@ class BinFilesHandler
 		User searchUser(User);
 		bool writeUserFile(User);
 		bool writeOnInventory(Book);
+		bool editOnInventory(vector<Book>);
 		vector<Book> readALLInventory();
 	private:
 		verifyHash(string);
+		void cleanFile();
 };
 
 #endif

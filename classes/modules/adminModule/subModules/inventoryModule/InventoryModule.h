@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "../../../../Book.h"
+
 using namespace std;
 
 class InventoryModule
@@ -13,12 +15,15 @@ class InventoryModule
 		InventoryModule();
 		void addEntryToInventory();
 		void deleteEntryOfInventory();
-		void searchEntryOfInventory();
+		void editEntryOfInventory();
 		void displayAllEntrys();
 		void displayModule();
 	private:
-		void validateForm(string, string, vector<string>, string, string, string, string);
+		void validateForm(string, string, vector<string>, string, string, string, string, bool);
 		void fixFormData(bool, bool, bool, bool, bool, bool, bool, string, string, vector<string>, string, string, string, string);
+		void editEntry(vector<Book>, int);
+		vector<Book> editingVector;
+		int indexvector;
 };
 
 #endif

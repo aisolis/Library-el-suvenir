@@ -1,6 +1,7 @@
 #include "InventoryModule.h"
 #include "../../../../Book.h"
 #include "../../../../BinFilesHandler.h"
+#include "../../AdminPanel.h"
 
 #include <iostream>
 #include <sstream>
@@ -31,6 +32,7 @@ std::string trim(const std::string &s) {
     return rtrim(ltrim(s));
 }
 
+
 COORD inventoryCoord = {0,0};
 
 void invGotoxy(int x, int y){
@@ -39,12 +41,23 @@ void invGotoxy(int x, int y){
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),inventoryCoord);
 }
 
+std::string truncate(std::string str, size_t width, bool show_ellipsis=true)
+{
+    if (str.length() > width)
+        if (show_ellipsis)
+            return str.substr(0, width) + "...";
+        else
+            return str.substr(0, width);
+    return str;
+}
+
 InventoryModule::InventoryModule(){
 	
 }
 
 void InventoryModule::displayModule(){
-	char optionMenu;
+	
+	int optionMenu;
 
 	system("CLS");
 		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
@@ -67,20 +80,34 @@ void InventoryModule::displayModule(){
 		cout << "| Su opcion:                                                                                                          |" << endl;	
 		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 
-		invGotoxy(28,13);
+		invGotoxy(13,17);
 		cin >> optionMenu;
 
 		switch(optionMenu){
 			case 1:{
-					addEntryToInventory()
+					addEntryToInventory();
 				break;
 			}
 
 			case 2:{
-				
+					displayAllEntrys();
+				break;
+			}
+			
+			case 3:{
+					editEntryOfInventory();
+				break;
+			}
+			
+			case 4:{
+					BinFilesHandler bfh = BinFilesHandler();
+					system("CLS");
+					bfh.readALLInventory();
 				break;
 			}
 		}
+		
+	invGotoxy(0,30);
 }
 
 void InventoryModule::addEntryToInventory(){
@@ -154,13 +181,13 @@ void InventoryModule::addEntryToInventory(){
 
 	if(toupper(option) == 'S' || tolower(option) == 's'){
 		invGotoxy(0,18);
-		InventoryModule::validateForm(title, autor, descVector, editorial, anio, pages, stock);
+		InventoryModule::validateForm(title, autor, descVector, editorial, anio, pages, stock, false);
 	}
 	
 	
 }
 
-void InventoryModule::validateForm(string title, string autor, vector<string> desc, string editorial, string anio, string pages, string stock){
+void InventoryModule::validateForm(string title, string autor, vector<string> desc, string editorial, string anio, string pages, string stock, bool isEdit){
 	Book book = Book();
 
 	int errorCount;
@@ -291,20 +318,39 @@ void InventoryModule::validateForm(string title, string autor, vector<string> de
 		invGotoxy(87,16);
 		cout << "VALIDO";
 		BinFilesHandler bfh = BinFilesHandler();
-
-		char opt2;
-
-		if(bfh.writeOnInventory(book)){
-			invGotoxy(0,16);
-			cout << "| Libro agregado al inventario con exito, agregar otro? S/N:              | FORMULARIO:  FINALIZADO   |";
-
-			invGotoxy(61,16);
-			cin >> opt2;
-
-			if(toupper(opt2) == 'S' || tolower(opt2) == 's'){
-				invGotoxy(0,0);
-				InventoryModule::addEntryToInventory();
+		if(isEdit){
+			editingVector[indexvector] = book;
+			char opt2;
+			if(bfh.editOnInventory(editingVector)){
+				invGotoxy(0,16);
+				cout << "| Libro editado en el inventario con exito, aceptar? S:                   | FORMULARIO:  FINALIZADO   |";
+	
+				invGotoxy(56,16);
+				cin >> opt2;
+	
+				if(toupper(opt2) == 'S' || tolower(opt2) == 's'){
+					invGotoxy(0,0);
+					InventoryModule::editEntryOfInventory();	
+				}
+			}else{
+				cout << "ERROR"<<endl;
 			}
+		}else{
+
+			char opt2;
+	
+			if(bfh.writeOnInventory(book)){
+				invGotoxy(0,16);
+				cout << "| Libro agregado al inventario con exito, agregar otro? S/N:              | FORMULARIO:  FINALIZADO   |";
+	
+				invGotoxy(61,16);
+				cin >> opt2;
+	
+				if(toupper(opt2) == 'S' || tolower(opt2) == 's'){
+					invGotoxy(0,0);
+					InventoryModule::addEntryToInventory();	
+				}
+			}		
 		}
 
 	
@@ -388,16 +434,307 @@ void InventoryModule::fixFormData(bool title, bool autor, bool desc, bool editor
 
 	if(toupper(optionFix) == 'S' || tolower(optionFix) == 's'){
 		invGotoxy(0,18);
-		InventoryModule::validateForm(titleFix, autorFix, descVector, editorialFix, anioFix, pagesFix, stockFix);
+		InventoryModule::validateForm(titleFix, autorFix, descVector, editorialFix, anioFix, pagesFix, stockFix, false);
 	}
 
 }
 
 void InventoryModule::displayAllEntrys(){
-	BinFilesHandler bfh = BinFilesHandler();
+		system("CLS");
+		BinFilesHandler bfh = BinFilesHandler();
+	
+		vector<Book> books = bfh.readALLInventory();
+		
+		char opt;
+		
+		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                              BIBLIOTECA EL PORVENIR                                                       |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                           LISTADO DE REGISTROS BIBLIOTECA                                                 |" << endl;
+		cout << "+----------------------------+-----------------+---------------+--------------------+-------------------+-------------------+" << endl;
+		cout << "|           Titulo           |      Autor      |   Editorial   | Año de Publicacion | Numero de Paginas | Cantidad en Stock |" << endl;
+		cout << "+----------------------------+-----------------+---------------+--------------------+-------------------+-------------------+" << endl;
+		
+		int firstLine = 7;
+		int modifier = 2;
+	for(int x = 0; x < books.size(); x++){
+		Book tmpB = books[x];
+		
+		invGotoxy(0,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(2,(firstLine));
+		cout <<	truncate(tmpB.getBookTitle(),23, true);
+		
+		
+		invGotoxy(29,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(31,(firstLine));
+		cout <<	truncate(tmpB.getAutor(),23, true);
+		
+		
+		invGotoxy(47,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(49,(firstLine));
+		cout <<	truncate(tmpB.getEditorial(),23, true);
+		
+		
+		invGotoxy(63,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(65,(firstLine));
+		cout <<	truncate(std::to_string(tmpB.getPublicationYear()),23, true);
+		
+		
+		invGotoxy(84,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(86,(firstLine));
+		cout <<	truncate(std::to_string(tmpB.getPagesNumbers()),23, true);
+		
+		
+		invGotoxy(104,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(106,(firstLine));
+		cout <<	truncate(std::to_string(tmpB.getStock()),23, true);
+		invGotoxy(124,(firstLine));
+		cout << "|" << endl;
+		cout << "+----------------------------+-----------------+---------------+--------------------+-------------------+-------------------+" <<endl;
+		
+		firstLine += 2;
+	}
+		
+		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Desea regresar al menu principal? S/N                                                                                     |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Su opcion:                                                                                                                |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
 
-	vector<Book> tmp = bfh.readALLInventory();
-
-	cout << tmp.size() << endl;
+	while(toupper(opt) != 'S'){
+		invGotoxy(0,firstLine+3);
+		cout << "| Su opcion:                                                                                                                |" << endl;	
+		invGotoxy(13,firstLine+3);
+		cin >> opt;	
+	}
+	
+	displayModule();
+	
 }
 
+
+void InventoryModule::editEntryOfInventory(){
+	
+	system("CLS");
+		BinFilesHandler bfh = BinFilesHandler();
+	
+		vector<Book> books = bfh.readALLInventory();
+		
+		string opt;
+		
+		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                              BIBLIOTECA EL PORVENIR                                                       |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                           LISTADO DE REGISTROS BIBLIOTECA                                                 |" << endl;
+		cout << "+----------------------------+-----------------+---------------+--------------------+-------------------+-------------------+" << endl;
+		cout << "|           Titulo           |      Autor      |   Editorial   | Año de Publicacion | Numero de Paginas | Cantidad en Stock |" << endl;
+		cout << "+----------------------------+-----------------+---------------+--------------------+-------------------+-------------------+" << endl;
+		
+		int firstLine = 7;
+		int modifier = 2;
+	for(int x = 0; x < books.size(); x++){
+		Book tmpB = books[x];
+		
+		invGotoxy(0,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(2,(firstLine));
+		cout <<	truncate(tmpB.getBookTitle(),23, true);
+		
+		
+		invGotoxy(29,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(31,(firstLine));
+		cout <<	truncate(tmpB.getAutor(),23, true);
+		
+		
+		invGotoxy(47,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(49,(firstLine));
+		cout <<	truncate(tmpB.getEditorial(),23, true);
+		
+		
+		invGotoxy(63,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(65,(firstLine));
+		cout <<	truncate(std::to_string(tmpB.getPublicationYear()),23, true);
+		
+		
+		invGotoxy(84,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(86,(firstLine));
+		cout <<	truncate(std::to_string(tmpB.getPagesNumbers()),23, true);
+		
+		
+		invGotoxy(104,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(106,(firstLine));
+		cout <<	truncate(std::to_string(tmpB.getStock()),23, true);
+		invGotoxy(124,(firstLine));
+		cout << "|" << endl;
+		cout << "+----------------------------+-----------------+---------------+--------------------+-------------------+-------------------+" <<endl;
+		
+		firstLine += 2;
+	}
+	
+		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Escriba el nombre del libro que desea editar                                                                              |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Titulo del Libro:                                                                                                         |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+		invGotoxy(13,firstLine+3);
+		cin.ignore();	
+		
+		getline(cin, opt);
+		
+		
+		for(int y = 0; y < books.size();y++){
+			if(opt == books[y].getBookTitle()){
+				editEntry(books, y);
+			}
+		}
+}
+
+void InventoryModule::editEntry(vector<Book> books, int index){
+	
+	
+	vector<string> descVector;
+	string title;
+	string autor;
+	string description;
+	string editorial;
+	string anio;
+	string pages;
+	string stock;
+	
+	char option;
+	int counter;
+	
+	
+	system("CLS");
+	cout << "+------------------------------------------------------------------------+----------------------------+\n"
+            "|                         BIBLIOTECA EL PORVENIR                         |         VALIDACIONES       |\n" 
+            "+------------------------------------------------------------------------+----------------------------+\n"
+            "|                      EDITAR ENTRADA AL INVENTARIO                      |  VALIDACION DE FORMULARIO  |\n"
+			"+------------------------------------------------------------------------+----------------------------+\n"
+			"| Nombre del libro:                                                      | STATUS:                    |\n"
+			"| Nombre del Autor:                                                      | STATUS:                    |\n"
+			"| Descripcion del libro:                                                 | STATUS:                    |\n"
+			"|                                                                        |                            |\n"
+			"|                                                                        |                            |\n"
+			"|                                                                        |                            |\n"
+			"| Nombre de la editorial:                                                | STATUS:                    |\n"
+			"| Anio de publicacion:                                                   | STATUS:                    |\n"
+			"| Numero de paginas:                                                     | STATUS:                    |\n"
+			"| Cantidad de existencias en stock:                                      | STATUS:                    |\n"
+			"+------------------------------------------------------------------------+----------------------------+\n"
+			"| Editar esta entrada S/N:                                               | FORMULARIO:                |\n"
+			"+------------------------------------------------------------------------+----------------------------+\n"
+	<< endl;
+	
+	Book preview = books[index];
+	
+	invGotoxy(20,5);
+	cout << preview.getBookTitle()<<endl;
+	
+	
+	invGotoxy(20,6);
+	cout << preview.getAutor()<<endl;
+	
+	invGotoxy(25,7);
+	int counter2 = 7;
+	vector<string> desc;
+	for(int u = 0; u < desc.size(); u++){
+		if(u > 0){
+			invGotoxy(25,7);	
+			cout << desc[u]<<endl;
+		}else{
+			invGotoxy(2,++counter2);	
+			cout << desc[u]<<endl;
+		}		
+	}
+	
+	invGotoxy(26,11);
+	cout << preview.getEditorial()<<endl;  
+	
+	invGotoxy(23,12);
+	cout << preview.getPublicationYear()<<endl;  
+	
+	invGotoxy(21,13);
+	cout << preview.getPagesNumbers()<<endl;  
+	
+	invGotoxy(36,14);
+	cout << preview.getStock()<<endl;  
+	
+	invGotoxy(27,16);
+	cin >> option;
+
+	if(toupper(option) == 'S' || tolower(option) == 's'){
+		system("CLS");
+		cout << "+------------------------------------------------------------------------+----------------------------+\n"
+	            "|                         BIBLIOTECA EL PORVENIR                         |         VALIDACIONES       |\n" 
+	            "+------------------------------------------------------------------------+----------------------------+\n"
+	            "|                      EDITAR ENTRADA AL INVENTARIO                      |  VALIDACION DE FORMULARIO  |\n"
+				"+------------------------------------------------------------------------+----------------------------+\n"
+				"| Nombre del libro:                                                      | STATUS:                    |\n"
+				"| Nombre del Autor:                                                      | STATUS:                    |\n"
+				"| Descripcion del libro:                                                 | STATUS:                    |\n"
+				"|                                                                        |                            |\n"
+				"|                                                                        |                            |\n"
+				"|                                                                        |                            |\n"
+				"| Nombre de la editorial:                                                | STATUS:                    |\n"
+				"| Anio de publicacion:                                                   | STATUS:                    |\n"
+				"| Numero de paginas:                                                     | STATUS:                    |\n"
+				"| Cantidad de existencias en stock:                                      | STATUS:                    |\n"
+				"+------------------------------------------------------------------------+----------------------------+\n"
+				"| Confirmar esta edicion S/N:                                            | FORMULARIO:                |\n"
+				"+------------------------------------------------------------------------+----------------------------+\n"
+		<< endl;
+		
+		invGotoxy(20,5);
+		cin.ignore();
+		getline(cin, title);
+		
+		invGotoxy(20,6);
+		getline(cin, autor);
+		
+		invGotoxy(25,7);
+		counter = 7;
+		while (getline(cin, description))
+	    {	invGotoxy(2,++counter);
+	        if (description.empty()) {        	
+	            break;
+	        }
+	        descVector.push_back(description);
+	    }
+		
+		invGotoxy(26,11);
+		getline(cin, editorial);
+		
+		invGotoxy(23,12);
+		getline(cin, anio);
+		
+		invGotoxy(21,13);
+		getline(cin, pages);
+		
+		invGotoxy(36,14);
+		getline(cin, stock);
+		
+		invGotoxy(28,16);
+		cin >> option;
+	
+		if(toupper(option) == 'S' || tolower(option) == 's'){
+			invGotoxy(0,18);
+			InventoryModule::validateForm(title, autor, descVector, editorial, anio, pages, stock, true);
+			editingVector = books;
+			indexvector = index;
+		}
+	}
+	
+	
+}

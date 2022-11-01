@@ -58,7 +58,7 @@ resetPanel:
 		case 1:{
 			InventoryModule im = InventoryModule();
 			
-			im.addEntryToInventory();
+			im.displayModule();
 			break;
 		}
 		
