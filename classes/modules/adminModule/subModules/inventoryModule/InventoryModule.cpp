@@ -508,6 +508,15 @@ void InventoryModule::validateForm(string title, string autor, vector<string> de
 		}else{
 
 			char opt2;
+			
+			vector<Book> booksTovalidate = bfh.readALLInventory();
+			
+			for(int x = 0; x < booksTovalidate.size(); x++){
+				Book aux = booksTovalidate[x];
+				if(book.getBookTitle() == aux.getBookTitle()){
+					throwAlert(booksTovalidate, x);
+				}
+			}
 	
 			if(bfh.writeOnInventory(book)){
 				invGotoxy(0,16);
@@ -525,6 +534,57 @@ void InventoryModule::validateForm(string title, string autor, vector<string> de
 
 	
 	}
+	
+}
+
+void InventoryModule::throwAlert(vector<Book> books, int index){
+	system("CLS");
+	invGotoxy(0,0);
+	cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+	cout << "|                                              BIBLIOTECA EL PORVENIR                                                       |" << endl;
+	cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+	cout << "|                                                                                                                           |" << endl;
+	cout << "|                                                                                                                           |" << endl;
+	cout << "|                                                                                                                           |" << endl;
+	cout << "|                                                                                                                           |" << endl;
+	cout << "|                                                                                                                           |" << endl;
+	cout << "|                                                                                                                           |" << endl;
+	cout << "|                                                                                                                           |" << endl;
+	cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+	cout << "| Se encontro una entrada en el inventario con el mismo titulo, desea modificar esta entrada? S/N:                          |" << endl;
+	cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
+	
+	invGotoxy(32,4);
+	cout << " 00000  00      0000000 000000  00000000  00000  00\n";
+	invGotoxy(32,5);
+	cout << "00   00 00      00      00   00    00    00   00 00\n";
+	invGotoxy(32,6);
+	cout <<	"0000000 00      00000   000000     00    0000000 00\n";
+	invGotoxy(32,7);
+	cout << "00   00 00      00      00   00    00    00   00   \n";
+	invGotoxy(32,8);
+	cout <<	"00   00 0000000 0000000 00   00    00    00   00 00\n";
+			
+	char opt;
+	invGotoxy(99,11);
+	cin >> opt;
+	
+	
+	
+	do{
+		if(tolower(opt) == 'n'){
+			displayModule();
+			break;
+		}
+		
+		invGotoxy(0,11);
+		cout << "| Se encontro una entrada en el inventario con el mismo titulo, desea modificar esta entrada? S/N:                          |" << endl;		
+		
+		invGotoxy(99,11);
+		cin >> opt;
+	}while(tolower(opt) != 's');
+	
+	editEntry(books, index);
 	
 }
 

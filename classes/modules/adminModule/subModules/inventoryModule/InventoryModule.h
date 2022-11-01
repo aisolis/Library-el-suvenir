@@ -24,6 +24,7 @@ class InventoryModule
 		void editEntry(vector<Book>, int);
 		vector<Book> editingVector;
 		int indexvector;
+		void throwAlert(vector<Book>, int);
 };
 
 #endif
