@@ -20,7 +20,7 @@ class InventoryModule
 		void displayModule();
 	private:
 		void validateForm(string, string, vector<string>, string, string, string, string, bool);
-		void fixFormData(bool, bool, bool, bool, bool, bool, bool, string, string, vector<string>, string, string, string, string);
+		void fixFormData(bool, bool, bool, bool, bool, bool, bool, string, string, vector<string>, string, string, string, string,bool);
 		void editEntry(vector<Book>, int);
 		vector<Book> editingVector;
 		int indexvector;
