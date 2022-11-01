@@ -102,7 +102,7 @@ void InventoryModule::displayModule(){
 			case 4:{
 					BinFilesHandler bfh = BinFilesHandler();
 					system("CLS");
-					bfh.readALLInventory();
+					bfh.cleanFile();
 				break;
 			}
 		}
@@ -182,6 +182,8 @@ void InventoryModule::addEntryToInventory(){
 	if(toupper(option) == 'S' || tolower(option) == 's'){
 		invGotoxy(0,18);
 		InventoryModule::validateForm(title, autor, descVector, editorial, anio, pages, stock, false);
+	}else{
+		displayModule();	
 	}
 	
 	
@@ -319,22 +321,34 @@ void InventoryModule::validateForm(string title, string autor, vector<string> de
 		cout << "VALIDO";
 		BinFilesHandler bfh = BinFilesHandler();
 		if(isEdit){
+			
+			Book aux = editingVector[indexvector];
+			book.setHashCode(aux.getHashCode());
+			book.setIsBorrowed(aux.getIsBorrowed());
+			book.setBorrowedDate(aux.getBorrowedDate());
 			editingVector[indexvector] = book;
+			
 			char opt2;
+			
 			if(bfh.editOnInventory(editingVector)){
+				while(toupper(opt2) != 'S'){
+					invGotoxy(0,16);
+					cout << "| Libro editado en el inventario con exito, aceptar? S:                   | FORMULARIO:  FINALIZADO   |";
+		
+					invGotoxy(56,16);
+					cin >> opt2;	
+				}	
+			}else{
+				while(toupper(opt2) != 'S'){
 				invGotoxy(0,16);
-				cout << "| Libro editado en el inventario con exito, aceptar? S:                   | FORMULARIO:  FINALIZADO   |";
+				cout << "| Libro no editado en el inventario, aceptar S:                            | FORMULARIO:  CON ERROR   |";
 	
 				invGotoxy(56,16);
-				cin >> opt2;
-	
-				if(toupper(opt2) == 'S' || tolower(opt2) == 's'){
-					invGotoxy(0,0);
-					InventoryModule::editEntryOfInventory();	
+				cin >> opt2;	
 				}
-			}else{
-				cout << "ERROR"<<endl;
 			}
+			invGotoxy(0,0);
+			InventoryModule::editEntryOfInventory();	
 		}else{
 
 			char opt2;
@@ -581,23 +595,25 @@ void InventoryModule::editEntryOfInventory(){
 		
 		firstLine += 2;
 	}
-	
-		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
-		cout << "| Escriba el nombre del libro que desea editar                                                                              |" << endl;	
+		cout << "| Escriba el nombre del libro que desea editar o escriba cancelar para volver al menu principal                             |" << endl;	
 		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
 		cout << "| Titulo del Libro:                                                                                                         |" << endl;	
 		cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
-		invGotoxy(13,firstLine+3);
+		invGotoxy(20,firstLine+2);
 		cin.ignore();	
 		
 		getline(cin, opt);
 		
-		
-		for(int y = 0; y < books.size();y++){
-			if(opt == books[y].getBookTitle()){
-				editEntry(books, y);
-			}
+		if(opt != "cancelar"){
+			for(int y = 0; y < books.size();y++){
+				if(opt == books[y].getBookTitle()){
+					editEntry(books, y);
+				}
+			}	
+		}else{
+			displayModule();
 		}
+		
 }
 
 void InventoryModule::editEntry(vector<Book> books, int index){
@@ -696,7 +712,7 @@ void InventoryModule::editEntry(vector<Book> books, int index){
 				"+------------------------------------------------------------------------+----------------------------+\n"
 		<< endl;
 		
-		invGotoxy(20,5);
+		invGotoxy(22,5);
 		cin.ignore();
 		getline(cin, title);
 		
@@ -707,7 +723,7 @@ void InventoryModule::editEntry(vector<Book> books, int index){
 		counter = 7;
 		while (getline(cin, description))
 	    {	invGotoxy(2,++counter);
-	        if (description.empty()) {        	
+	        if (description.empty() || counter) {        	
 	            break;
 	        }
 	        descVector.push_back(description);
@@ -725,15 +741,18 @@ void InventoryModule::editEntry(vector<Book> books, int index){
 		invGotoxy(36,14);
 		getline(cin, stock);
 		
-		invGotoxy(28,16);
+		invGotoxy(30,16);
 		cin >> option;
 	
 		if(toupper(option) == 'S' || tolower(option) == 's'){
-			invGotoxy(0,18);
-			InventoryModule::validateForm(title, autor, descVector, editorial, anio, pages, stock, true);
-			editingVector = books;
+			InventoryModule::editingVector = books;
 			indexvector = index;
+			InventoryModule::validateForm(title, autor, descVector, editorial, anio, pages, stock, true);
+		}else{
+			editEntryOfInventory();	
 		}
+	}else{
+		editEntryOfInventory();
 	}
 	
 	

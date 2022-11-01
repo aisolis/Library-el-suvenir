@@ -105,7 +105,6 @@ bool BinFilesHandler::writeOnInventory(Book book){
 	try{
 		ofstream fh("libraryFiles\\inventory.csv", ios::app);
 		if(fh.is_open()){
-//			vector<Book> offset = readALLInventory();
 			fh << "" << book.getBookTitle() << "," <<  book.getAutor() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << endl;
 			fh.close();
 			return true;
@@ -122,11 +121,12 @@ bool BinFilesHandler::writeOnInventory(Book book){
 
 void BinFilesHandler::cleanFile(){
 	try{
-	   fstream fh("libraryFiles\\inventory.csv");
+	   fstream fh("libraryFiles\\inventory.csv", ios::out);
 	   vector<Book> offset = readALLInventory();
 	   if(fh.is_open()){
 	   		for(int y = 0; y < offset.size()+1; y++){
-	   			fh << "" << "," <<  "" << "," <<  "" << "," <<  "" << "," <<  "" << "," <<  "" << "," <<  "" << "," <<  "" << "," <<  "" << "," <<  "" << std::endl;
+	   			fh.seekg((y)*sizeof(User));
+	   			fh <<"";
 	   		}
 	   }	fh.close();
 	}catch(bool ex){
@@ -135,11 +135,10 @@ void BinFilesHandler::cleanFile(){
 
 bool BinFilesHandler::editOnInventory(vector<Book> books){
 	try{
-		fstream fh("libraryFiles\\inventory.csv");
+		ofstream fh("libraryFiles\\inventory.csv", ios::app);
 		cleanFile();
 		if(fh.is_open()){
-			for(int z = 0; z < books.size();z++){
-				//fh.seekg((offset.size()+1)*sizeof(Book));	
+			for(int z = 0; z < books.size();z++){	
 				fh << books[z].getBookTitle() << "," <<  books[z].getAutor() << "," <<  books[z].getLinealDescription() << "," <<  books[z].getEditorial() << "," <<  books[z].getPublicationYear() << "," <<  books[z].getPagesNumbers() << "," <<  books[z].getStock() << "," <<  books[z].getHashCode() << "," <<  books[z].getIsBorrowed() << "," <<  books[z].getBorrowedDate() << std::endl;
 			}			
 			fh.close();

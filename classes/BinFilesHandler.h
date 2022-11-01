@@ -18,9 +18,10 @@ class BinFilesHandler
 		bool writeOnInventory(Book);
 		bool editOnInventory(vector<Book>);
 		vector<Book> readALLInventory();
+		void cleanFile();
 	private:
 		verifyHash(string);
-		void cleanFile();
+		
 };
 
 #endif
