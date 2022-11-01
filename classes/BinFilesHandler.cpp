@@ -103,11 +103,10 @@ bool BinFilesHandler::writeOnInventory(Book book){
 	book.setBorrowedDate("sin prestar");
 
 	try{
-		fstream fh("libraryFiles\\inventory.csv");
+		ofstream fh("libraryFiles\\inventory.csv", ios::app);
 		if(fh.is_open()){
-			vector<Book> offset = readALLInventory();
-			fh.seekg((offset.size()+1)*sizeof(Book));
-			fh << trim1(book.getBookTitle()) << "," <<  book.getAutor() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << std::endl;
+//			vector<Book> offset = readALLInventory();
+			fh << "" << book.getBookTitle() << "," <<  book.getAutor() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << endl;
 			fh.close();
 			return true;
 		}else{
