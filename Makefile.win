@@ -4,8 +4,8 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = main.o classes/BinFilesHandler.o classes/LoginForm.o classes/User.o classes/modules/adminModule/AdminPanel.o classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o classes/Book.o
-LINKOBJ  = main.o classes/BinFilesHandler.o classes/LoginForm.o classes/User.o classes/modules/adminModule/AdminPanel.o classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o classes/Book.o
+OBJ      = main.o classes/BinFilesHandler.o classes/LoginForm.o classes/User.o classes/modules/adminModule/AdminPanel.o classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o classes/Book.o classes/modules/adminModule/subModules/masiveModule/MasiveModule.o
+LINKOBJ  = main.o classes/BinFilesHandler.o classes/LoginForm.o classes/User.o classes/modules/adminModule/AdminPanel.o classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o classes/Book.o classes/modules/adminModule/subModules/masiveModule/MasiveModule.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -g3
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
@@ -44,3 +44,6 @@ classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o: classe
 
 classes/Book.o: classes/Book.cpp
 	$(CPP) -c classes/Book.cpp -o classes/Book.o $(CXXFLAGS)
+
+classes/modules/adminModule/subModules/masiveModule/MasiveModule.o: classes/modules/adminModule/subModules/masiveModule/MasiveModule.cpp
+	$(CPP) -c classes/modules/adminModule/subModules/masiveModule/MasiveModule.cpp -o classes/modules/adminModule/subModules/masiveModule/MasiveModule.o $(CXXFLAGS)

@@ -8,11 +8,13 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <algorithm>
+#include <dirent.h>
+#include <sys/stat.h>
 
 #include "BinFilesHandler.h"
 #include "User.h"
-
-#include <algorithm>
+#include "io.h"
 
 
 const std::string WHITESPACE1 = " \n\r\t\f\v";
@@ -242,5 +244,45 @@ vector<Book> BinFilesHandler::readALLInventory(){
 		return books;
 	}catch(bool ex){
 		return books;
+	}
+}
+
+void BinFilesHandler::masiveBulk(){
+	copytemplate();
+}
+
+std::string get_working_path()
+{
+   char temp[100];
+   return ( getcwd(temp, sizeof(temp)) ? std::string( temp ) : std::string("") );
+}
+
+void BinFilesHandler::copytemplate(){
+	try{
+		DIR *dir;
+		struct dirent *entry;
+		struct stat info;
+		
+		
+		
+		string archivo = "libraryFiles\\masiveBulk\\template.csv";
+		ifstream infile(archivo.c_str());
+		
+		if(infile.good()){
+			//system("start \\Library-el-suvenir\\libraryFiles\\masiveBulk\\");		
+		}else{
+			system("cd..");
+			system("cd..");
+			system("copy Library-el-suvenir\\template\\template.csv Library-el-suvenir\\");
+			/*system("cd Library-el-suvenir");
+			system("copy Library-el-suvenir\\template.csv libraryFiles\\masiveBulk\\");
+			system("start libraryFiles\\masiveBulk");*/
+			
+			
+		}
+		
+		
+	}catch(int x){
+		
 	}
 }

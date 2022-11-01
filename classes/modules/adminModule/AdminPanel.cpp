@@ -1,5 +1,6 @@
 #include "AdminPanel.h"
 #include "subModules/inventoryModule/InventoryModule.h"
+#include "subModules/masiveModule/MasiveModule.h"
 
 #include <iostream>
 #include <sstream>
@@ -63,8 +64,8 @@ resetPanel:
 		}
 		
 		case 2:{
-			InventoryModule im = InventoryModule();
-			im.displayAllEntrys();
+			MasiveModule mm = MasiveModule();
+			mm.displayModule();
 			break;
 		}
 		
