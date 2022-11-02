@@ -247,8 +247,136 @@ vector<Book> BinFilesHandler::readALLInventory(){
 	}
 }
 
-void BinFilesHandler::masiveBulk(){
-	copytemplate();
+
+vector<Book> BinFilesHandler::readMasiveBulkCsv(){
+	vector<Book> books;
+	try{
+		ifstream infile;
+		string line = "";
+		int c = 0;
+		int w = 0;
+		int z = 0;
+		vector<Book> aux = readALLInventory();
+		infile.open("libraryFiles\\masiveBulk\\template.csv", ios::in);
+		
+		while(getline(infile,line)){
+			w++;
+			
+			if(w == 1){
+				continue;
+			}
+			c=0;
+			
+			stringstream strstr(line);	
+			string word="";
+			
+			Book book = Book();
+			Book bookAux;
+			if(w-1<aux.size()){
+				bookAux = aux[z];
+			}
+			z++;
+			
+			while(getline(strstr, word, ',')){
+				c++;
+				switch(c){
+					case 1:{
+						book.setBookTitle(word);
+						break;
+					}
+					case 2:{
+						book.setAutor(word);
+						break;
+					}
+					case 3:{
+						vector<string> desc;
+						desc.push_back(word);
+						book.setDescription(desc);
+						break;
+					}
+					case 4:{
+						book.setEditorial(word);
+						break;
+					}
+					case 5:{
+						int publicationYear;
+						std::istringstream (word) >> publicationYear;
+						book.setPublicationYear(publicationYear);
+						break;
+					}
+					case 6:{
+						int pages;
+						std::istringstream (word) >> pages;
+						book.setPagesNumbers(pages);
+						break;
+					}
+					case 7:{
+						int stock;
+						std::istringstream (word) >> stock;
+						book.setStock(stock);
+						break;
+					}
+					case 8:{
+						int hashcode;
+						std::istringstream (word) >> hashcode;
+						book.setHashCode(hashcode);
+						break;
+					}
+					case 9:{
+						bool borrowed;
+						if(word == "0"){
+							borrowed = false;
+						}else{
+							borrowed = true;
+						}
+						book.setIsBorrowed(borrowed);
+						break;
+					}
+					case 10:{
+						book.setBorrowedDate(word);
+						break;
+					}
+					default:{
+						break;
+					}
+				}	
+			}
+			
+			if(bookAux.getBookTitle() == book.getBookTitle()){
+				bookAux.setStock(bookAux.getStock()+book.getStock());
+				books.push_back(bookAux);
+			}else{
+				books.push_back(book);	
+			}
+			
+		}
+		
+		for(int x = 0; x < books.size(); x++){			
+			Book tmp = books[x];
+			Book tmp2 = aux[x];
+			if(tmp.getBookTitle() == tmp2.getBookTitle()){
+				continue;
+			}else{
+				books.push_back(aux[x]);	
+			}
+		}
+		
+		return books;
+	}catch(bool ex){
+		return books;
+	}
+}
+
+bool BinFilesHandler::masiveBulk(){
+	vector<Book> newAux = readMasiveBulkCsv();
+	if(newAux.size() == 0){
+		return false;
+	}
+	if(editOnInventory(newAux)){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 std::string get_working_path()
@@ -262,27 +390,18 @@ void BinFilesHandler::copytemplate(){
 		DIR *dir;
 		struct dirent *entry;
 		struct stat info;
-		
-		
-		
 		string archivo = "libraryFiles\\masiveBulk\\template.csv";
 		ifstream infile(archivo.c_str());
-		
-		if(infile.good()){
-			//system("start \\Library-el-suvenir\\libraryFiles\\masiveBulk\\");		
+				
+		if(!infile.good()){
+			system("cd ..");
+			system("copy template\\template.csv libraryFiles\\masiveBulk\\");	
+			system("start libraryFiles\\masiveBulk");	
 		}else{
 			system("cd..");
-			system("cd..");
-			system("copy Library-el-suvenir\\template\\template.csv Library-el-suvenir\\");
-			/*system("cd Library-el-suvenir");
-			system("copy Library-el-suvenir\\template.csv libraryFiles\\masiveBulk\\");
-			system("start libraryFiles\\masiveBulk");*/
-			
-			
+			system("start libraryFiles\\masiveBulk");		
 		}
 		
-		
 	}catch(int x){
-		
 	}
 }
