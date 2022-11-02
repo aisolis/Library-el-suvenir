@@ -387,9 +387,6 @@ std::string get_working_path()
 
 void BinFilesHandler::copytemplate(){
 	try{
-		DIR *dir;
-		struct dirent *entry;
-		struct stat info;
 		string archivo = "libraryFiles\\masiveBulk\\template.csv";
 		ifstream infile(archivo.c_str());
 				
@@ -404,4 +401,13 @@ void BinFilesHandler::copytemplate(){
 		
 	}catch(int x){
 	}
+}
+
+
+bool BinFilesHandler::downloadInventory(){
+	system("cd..");
+	system("copy libraryFiles\\inventory.csv Downloads\\backups\\");
+	system("start Downloads\\backups");	
+	
+	return true;
 }
