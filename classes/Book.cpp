@@ -12,13 +12,15 @@
 Book::Book(){
 }
 
-Book::Book(string title, string _autor, vector<string> desc, string _editorial, int publicYear, int pages, int _stock, int hash, bool borrowed, string borrowDate){
+Book::Book(string title, string _autor, string _category, vector<string> desc, string _editorial, int publicYear, int pages, double _price, int _stock, int hash, bool borrowed, string borrowDate){
 	Book::bookTitle = title;
 	Book::autor = _autor;
+	Book::category = _category;
 	Book::description = desc;	
 	Book::editorial = _editorial;
 	Book::publicationYear = publicYear;
 	Book::pagesNumbers = pages;
+	Book::price = _price;
 	Book::stock = _stock;
 	Book::hashcode = hash;
 	Book::isBorrowed = borrowed;
@@ -39,6 +41,14 @@ void Book::setAutor(string name){
 
 string Book::getAutor(){
 	return Book::autor;
+}
+
+void Book::setCategory(string cat){
+	Book::category = cat;
+}
+
+string Book::getCategory(){
+	return Book::category;
 }
 
 void Book::setDescription(vector<string> desc){
@@ -81,6 +91,15 @@ void Book::setPagesNumbers(int pages){
 
 int Book::getPagesNumbers(){
 	return Book::pagesNumbers;
+}
+
+
+void Book::setPrice(double _price){
+	Book::price = _price;
+}
+
+double Book::getPrice(){
+	return Book::price;
 }
 
 void Book::setStock(int _stock){

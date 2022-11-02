@@ -11,13 +11,18 @@ class Book
 {
 	public:
 		Book();
-		Book(string,string,vector<string>,string,int,int,int,int,bool,string);
+		Book(string,string,string,vector<string>,string,int,int,double,int,int,bool,string);
+		//Book(string,string,vector<string>,string,int,int,int,int,bool,string);
+		
 		
 		void setBookTitle(string);
 		string getBookTitle();
 		
 		void setAutor(string);
 		string getAutor();
+		
+		void setCategory(string);
+		string getCategory();
 		
 		void setDescription(vector<string>);
 		vector<string> getDescription();
@@ -32,6 +37,9 @@ class Book
 		void setPagesNumbers(int);
 		int getPagesNumbers();
 		
+		void setPrice(double);
+		double getPrice();
+		
 		void setStock(int);
 		int getStock();
 		
@@ -44,17 +52,21 @@ class Book
 		void setBorrowedDate(string);
 		string getBorrowedDate();
 		
+		
 	private:
 		string bookTitle;
 		string autor;
+		string category;
 		vector<string> description;
 		string editorial;
 		int publicationYear;
 		int pagesNumbers;
+		double price;
 		int stock;
 		int hashcode;
 		bool isBorrowed;
 		string borrowedDate;
+		
 };
 
 #endif

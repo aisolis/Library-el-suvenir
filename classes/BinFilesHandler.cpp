@@ -107,7 +107,7 @@ bool BinFilesHandler::writeOnInventory(Book book){
 	try{
 		ofstream fh("libraryFiles\\inventory.csv", ios::app);
 		if(fh.is_open()){
-			fh << "" << book.getBookTitle() << "," <<  book.getAutor() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << endl;
+			fh << "" << book.getBookTitle() << "," <<  book.getAutor() << "," << book.getCategory() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," << book.getPrice() <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << endl;
 			fh.close();
 			return true;
 		}else{
@@ -141,7 +141,7 @@ bool BinFilesHandler::editOnInventory(vector<Book> books){
 		cleanFile();
 		if(fh.is_open()){
 			for(int z = 0; z < books.size();z++){	
-				fh << books[z].getBookTitle() << "," <<  books[z].getAutor() << "," <<  books[z].getLinealDescription() << "," <<  books[z].getEditorial() << "," <<  books[z].getPublicationYear() << "," <<  books[z].getPagesNumbers() << "," <<  books[z].getStock() << "," <<  books[z].getHashCode() << "," <<  books[z].getIsBorrowed() << "," <<  books[z].getBorrowedDate() << std::endl;
+				fh << books[z].getBookTitle() << "," <<  books[z].getAutor() << "," << books[z].getCategory() << "," <<  books[z].getLinealDescription() << "," <<  books[z].getEditorial() << "," <<  books[z].getPublicationYear() << "," <<  books[z].getPagesNumbers() << "," << books[z].getPrice() << "," << books[z].getStock() << "," <<  books[z].getHashCode() << "," <<  books[z].getIsBorrowed() << "," <<  books[z].getBorrowedDate() << std::endl;
 			}			
 			fh.close();
 			return true;
@@ -186,40 +186,50 @@ vector<Book> BinFilesHandler::readALLInventory(){
 						break;
 					}
 					case 3:{
+						book.setCategory(word);
+						break;
+					}
+					case 4:{
 						vector<string> desc;
 						desc.push_back(word);
 						book.setDescription(desc);
 						break;
 					}
-					case 4:{
+					case 5:{
 						book.setEditorial(word);
 						break;
 					}
-					case 5:{
+					case 6:{
 						int publicationYear;
 						std::istringstream (word) >> publicationYear;
 						book.setPublicationYear(publicationYear);
 						break;
 					}
-					case 6:{
+					case 7:{
 						int pages;
 						std::istringstream (word) >> pages;
 						book.setPagesNumbers(pages);
 						break;
 					}
-					case 7:{
+					case 8:{
+						double price;
+						price = std::stod(word);
+						book.setPrice(price);
+						break;
+					}
+					case 9:{
 						int stock;
 						std::istringstream (word) >> stock;
 						book.setStock(stock);
 						break;
 					}
-					case 8:{
+					case 10:{
 						int hashcode;
 						std::istringstream (word) >> hashcode;
 						book.setHashCode(hashcode);
 						break;
 					}
-					case 9:{
+					case 11:{
 						bool borrowed;
 						if(word == "0"){
 							borrowed = false;
@@ -229,7 +239,7 @@ vector<Book> BinFilesHandler::readALLInventory(){
 						book.setIsBorrowed(borrowed);
 						break;
 					}
-					case 10:{
+					case 12:{
 						book.setBorrowedDate(word);
 						break;
 					}
@@ -289,40 +299,50 @@ vector<Book> BinFilesHandler::readMasiveBulkCsv(){
 						break;
 					}
 					case 3:{
+						book.setCategory(word);
+						break;
+					}
+					case 4:{
 						vector<string> desc;
 						desc.push_back(word);
 						book.setDescription(desc);
 						break;
 					}
-					case 4:{
+					case 5:{
 						book.setEditorial(word);
 						break;
 					}
-					case 5:{
+					case 6:{
 						int publicationYear;
 						std::istringstream (word) >> publicationYear;
 						book.setPublicationYear(publicationYear);
 						break;
 					}
-					case 6:{
+					case 7:{
 						int pages;
 						std::istringstream (word) >> pages;
 						book.setPagesNumbers(pages);
 						break;
 					}
-					case 7:{
+					case 8:{
+						double price;
+						price = std::stod(word);
+						book.setPrice(price);
+						break;
+					}
+					case 9:{
 						int stock;
 						std::istringstream (word) >> stock;
 						book.setStock(stock);
 						break;
 					}
-					case 8:{
+					case 10:{
 						int hashcode;
 						std::istringstream (word) >> hashcode;
 						book.setHashCode(hashcode);
 						break;
 					}
-					case 9:{
+					case 11:{
 						bool borrowed;
 						if(word == "0"){
 							borrowed = false;
@@ -332,7 +352,7 @@ vector<Book> BinFilesHandler::readMasiveBulkCsv(){
 						book.setIsBorrowed(borrowed);
 						break;
 					}
-					case 10:{
+					case 12:{
 						book.setBorrowedDate(word);
 						break;
 					}
