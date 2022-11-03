@@ -1,17 +1,17 @@
 # Project: biblioteca
 # Makefile created by Dev-C++ 5.11
 
-CPP      = g++.exe -D__DEBUG__
-CC       = gcc.exe -D__DEBUG__
+CPP      = g++.exe
+CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o classes/BinFilesHandler.o classes/LoginForm.o classes/User.o classes/modules/adminModule/AdminPanel.o classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o classes/Book.o classes/modules/adminModule/subModules/masiveModule/MasiveModule.o classes/modules/adminModule/subModules/usersModule/UserModule.o
-LINKOBJ  = main.o classes/BinFilesHandler.o classes/LoginForm.o classes/User.o classes/modules/adminModule/AdminPanel.o classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o classes/Book.o classes/modules/adminModule/subModules/masiveModule/MasiveModule.o classes/modules/adminModule/subModules/usersModule/UserModule.o
-LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -g3
+OBJ      = main.o classes/BinFilesHandler.o classes/Book.o classes/LoginForm.o classes/User.o classes/modules/adminModule/AdminPanel.o classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o classes/modules/adminModule/subModules/masiveModule/MasiveModule.o classes/modules/adminModule/subModules/usersModule/UserModule.o classes/modules/SuperModule/SupervisorPanel.o classes/modules/operatorModule/OperatorPanel.o
+LINKOBJ  = main.o classes/BinFilesHandler.o classes/Book.o classes/LoginForm.o classes/User.o classes/modules/adminModule/AdminPanel.o classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o classes/modules/adminModule/subModules/masiveModule/MasiveModule.o classes/modules/adminModule/subModules/usersModule/UserModule.o classes/modules/SuperModule/SupervisorPanel.o classes/modules/operatorModule/OperatorPanel.o
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
 BIN      = biblioteca.exe
 CXXFLAGS = $(CXXINCS) -g3 -std=c++0x
-CFLAGS   = $(INCS) -g3
+CFLAGS   = $(INCS) 
 RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom
@@ -30,6 +30,9 @@ main.o: main.cpp
 classes/BinFilesHandler.o: classes/BinFilesHandler.cpp
 	$(CPP) -c classes/BinFilesHandler.cpp -o classes/BinFilesHandler.o $(CXXFLAGS)
 
+classes/Book.o: classes/Book.cpp
+	$(CPP) -c classes/Book.cpp -o classes/Book.o $(CXXFLAGS)
+
 classes/LoginForm.o: classes/LoginForm.cpp
 	$(CPP) -c classes/LoginForm.cpp -o classes/LoginForm.o $(CXXFLAGS)
 
@@ -42,11 +45,14 @@ classes/modules/adminModule/AdminPanel.o: classes/modules/adminModule/AdminPanel
 classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o: classes/modules/adminModule/subModules/inventoryModule/InventoryModule.cpp
 	$(CPP) -c classes/modules/adminModule/subModules/inventoryModule/InventoryModule.cpp -o classes/modules/adminModule/subModules/inventoryModule/InventoryModule.o $(CXXFLAGS)
 
-classes/Book.o: classes/Book.cpp
-	$(CPP) -c classes/Book.cpp -o classes/Book.o $(CXXFLAGS)
-
 classes/modules/adminModule/subModules/masiveModule/MasiveModule.o: classes/modules/adminModule/subModules/masiveModule/MasiveModule.cpp
 	$(CPP) -c classes/modules/adminModule/subModules/masiveModule/MasiveModule.cpp -o classes/modules/adminModule/subModules/masiveModule/MasiveModule.o $(CXXFLAGS)
 
 classes/modules/adminModule/subModules/usersModule/UserModule.o: classes/modules/adminModule/subModules/usersModule/UserModule.cpp
 	$(CPP) -c classes/modules/adminModule/subModules/usersModule/UserModule.cpp -o classes/modules/adminModule/subModules/usersModule/UserModule.o $(CXXFLAGS)
+
+classes/modules/SuperModule/SupervisorPanel.o: classes/modules/SuperModule/SupervisorPanel.cpp
+	$(CPP) -c classes/modules/SuperModule/SupervisorPanel.cpp -o classes/modules/SuperModule/SupervisorPanel.o $(CXXFLAGS)
+
+classes/modules/operatorModule/OperatorPanel.o: classes/modules/operatorModule/OperatorPanel.cpp
+	$(CPP) -c classes/modules/operatorModule/OperatorPanel.cpp -o classes/modules/operatorModule/OperatorPanel.o $(CXXFLAGS)

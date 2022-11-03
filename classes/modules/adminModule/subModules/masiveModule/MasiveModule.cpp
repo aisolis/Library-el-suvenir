@@ -2,6 +2,7 @@
 #include "../../../../BinFilesHandler.h"
 #include "../inventoryModule/InventoryModule.h"
 #include "../../AdminPanel.h"
+#include "../../../SuperModule/SupervisorPanel.h"
 
 #include <iostream>
 #include <sstream>
@@ -24,6 +25,62 @@ MasiveModule::MasiveModule(){
 	
 }
 
+void MasiveModule::displayMasiveModuleSupervisor(){
+	int optionMenu;
+	string parser;
+
+	system("CLS");
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                              BIBLIOTECA EL PORVENIR                                                 |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                                MODULO DE MASIVOS                                                    |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Bienvenido nuevamente estimado Administrador                                                                        |" << endl;
+		cout << "| Por favor elija una opcion del siguiente menu:                                                                      |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "| 1) Carga masiva de inventario                                                                                       |" << endl;
+		cout << "| 2) Descarga masiva de inventario                                                                                    |" << endl;
+		cout << "| 3) Regresar al menu anterior                                                                                        |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Para ingresar presiona enter...                                                                                     |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Su opcion:                                                                                                          |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+
+		masiveGotoxy(13,17);
+		cin >> parser;
+
+
+		std::istringstream (parser) >> optionMenu;
+		
+		switch(optionMenu){
+			case 1:{
+				masiveUpload();
+				break;
+			}
+
+			case 2:{
+				masiveDownload();
+				break;
+			}
+			
+			case 3:{
+				SupervisorPanel sp = SupervisorPanel();
+				sp.displayPanel();
+				break;
+			}
+			
+			
+			default:{
+				displayModule();
+				break;
+			}
+		}
+	
+}
 
 void MasiveModule::displayModule(){
 	int optionMenu;

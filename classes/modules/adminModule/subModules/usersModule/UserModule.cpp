@@ -2,6 +2,7 @@
 #include "../../../../BinFilesHandler.h"
 #include "../../../../User.h"
 #include "../../AdminPanel.h"
+#include "../../../SuperModule/SupervisorPanel.h"
 
 #include <iostream>
 #include <sstream>
@@ -42,6 +43,61 @@ void userGotoxy(int x, int y){
 
 UserModule::UserModule(){
 	
+}
+
+void UserModule::displayModuleSupervisor(){
+	int optionMenu;
+	string parser;
+
+	system("CLS");
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                              BIBLIOTECA EL PORVENIR                                                 |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                                MODULO DE USUARIOS                                                   |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Bienvenido nuevamente estimado Administrador                                                                        |" << endl;
+		cout << "| Por favor elija una opcion del siguiente menu:                                                                      |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "| 1) Listar todos los usuarios                                                                                        |" << endl;
+		cout << "| 2) Volver al menu anterior                                                                                          |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Para ingresar presiona enter...                                                                                     |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Su opcion:                                                                                                          |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+
+		userGotoxy(13,19);
+		cin >> parser;
+
+
+		std::istringstream (parser) >> optionMenu;
+		
+		switch(optionMenu){
+			case 1:{
+				displayUsers();
+				break;
+			}
+
+			case 2:{
+				SupervisorPanel sp = SupervisorPanel();
+				sp.displayPanel();
+				break;
+			}
+			
+			default:{
+				SupervisorPanel sp = SupervisorPanel();
+				sp.displayPanel();
+				break;
+			}
+		}
+		
+	userGotoxy(0,30);
 }
 
 void UserModule::displayModule(){
@@ -137,7 +193,7 @@ void UserModule::addNewUsers(){
 			"|             0) Operador     1) supervisor   2) Administrador           |                            |\n"
 			"|                                                                        |                            |\n"
 			"| Nombre de usuario:                                                     | STATUS:                    |\n"
-			"| Contraseña:                                                            | STATUS:                    |\n"
+			"| Contraseï¿½a:                                                            | STATUS:                    |\n"
 			"| Rol:                                                                   | STATUS:                    |\n"
 			"|                                                                        |                            |\n"
 			"+------------------------------------------------------------------------+----------------------------+\n"
@@ -495,17 +551,17 @@ void UserModule::updateUsers(){
 	    c = ::tolower(c);
 		});
 		
-		if(opt != "cancelar"){
-			for(int y = 0; y < users.size();y++){
-				if(opt == users[y].getUser()){
-					editEntry(users, y);
-				}else{
-					updateUsers();
-				}
-			}	
-		}else{
-			displayModule();
-		}
+		
+		
+		for(int y = 0; y < users.size();y++){
+			if(opt == users[y].getUser()){
+				editEntry(users, y);
+			}else{
+				continue;
+			}
+		}	
+		
+		displayModule();
 		
 			
 }
@@ -574,7 +630,7 @@ void UserModule::editEntry(vector<User> users, int index){
 				"|                                                                        |                                 |                            |\n"
 				"|                            Roles disponibles                           |                                 |                            |\n"
 				"|                                                                        |                                 |                            |\n"
-				"|             0) Operador     1) supervisor   2) Administrador           |                                 |                            |\n"
+				"|             1) Operador     2) supervisor   3) Administrador           |                                 |                            |\n"
 				"|                                                                        |                                 |                            |\n"
 				"| Nombre de usuario:                                                     | PREV:                           | STATUS: NO MODIFICABLE     |\n"
 				"| Contraseña:                                                            | PREV:                           | STATUS:                    |\n"

@@ -18,6 +18,9 @@ class InventoryModule
 		void editEntryOfInventory();
 		void displayAllEntrys();
 		void displayModule();
+
+		void displayInventoryModuleSupervisor();
+		void displayInventoryModuleOperator();
 	private:
 		void validateForm(string, string, string, vector<string>, string, string, string, string, string, bool);
 		void fixFormData(bool, bool, bool, bool, bool, bool, bool, bool, bool, string, string, string, vector<string>, string, string, string, string, string,bool);
@@ -28,3 +31,4 @@ class InventoryModule
 };
 
 #endif
+

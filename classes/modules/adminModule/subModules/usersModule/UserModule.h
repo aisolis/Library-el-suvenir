@@ -16,6 +16,8 @@ class UserModule
 		void updateUsers();
 		void displayUsers();
 		void deleteUsers();
+
+		void displayModuleSupervisor();
 	private:
 		void validateForm(string, string, string, bool);
 		void fixFormData(bool, bool, bool, string, string, string, bool);

@@ -2,6 +2,8 @@
 #include "../../../../Book.h"
 #include "../../../../BinFilesHandler.h"
 #include "../../AdminPanel.h"
+#include "../../../SuperModule/SupervisorPanel.h"
+#include "../../../operatorModule/OperatorPanel.h"
 
 #include <iostream>
 #include <sstream>
@@ -53,6 +55,119 @@ std::string truncate(std::string str, size_t width, bool show_ellipsis=true)
 
 InventoryModule::InventoryModule(){
 	
+}
+
+void InventoryModule::displayInventoryModuleOperator(){
+	int optionMenu;
+	string parser;
+
+	system("CLS");
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                                  BIBLIOTECA EL PORVENIR                                             |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                                  MODULO DE INVENTARIOS                                              |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Bienvenido nuevamente estimado Operador                                                                             |" << endl;
+		cout << "| Por favor elija una opcion del siguiente menu:                                                                      |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "| 1) Listar todos los registros                                                                                       |" << endl;
+		cout << "| 2) Regresar al menu anterior                                                                                        |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Para ingresar presiona enter...                                                                                     |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Su opcion:                                                                                                          |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+
+		invGotoxy(13,17);
+		cin >> parser;
+
+
+		std::istringstream (parser) >> optionMenu;
+		
+		AdminPanel ap = AdminPanel();
+		switch(optionMenu){
+			case 1:{
+					displayAllEntrys();
+				break;
+			}
+
+			case 2:{
+					OperatorPanel op = OperatorPanel();
+					op.displayPanel();
+				break;
+			}
+
+			default:{
+					OperatorPanel op = OperatorPanel();
+					op.displayPanel();
+				break;
+			}
+		}
+		
+	invGotoxy(0,30);
+}
+
+void InventoryModule::displayInventoryModuleSupervisor(){
+	int optionMenu;
+	string parser;
+
+	system("CLS");
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                                  BIBLIOTECA EL PORVENIR                                             |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                                  MODULO DE INVENTARIOS                                              |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Bienvenido nuevamente estimado Supervisor                                                                           |" << endl;
+		cout << "| Por favor elija una opcion del siguiente menu:                                                                      |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "| 1) Agregar un registro al inventario                                                                                |" << endl;
+		cout << "| 2) Listar todos los registros                                                                                       |" << endl;
+		cout << "| 3) Regresar al menu anterior                                                                                        |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "|                                                                                                                     |" << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Para ingresar presiona enter...                                                                                     |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Su opcion:                                                                                                          |" << endl;	
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+
+		invGotoxy(13,17);
+		cin >> parser;
+
+
+		std::istringstream (parser) >> optionMenu;
+		
+		AdminPanel ap = AdminPanel();
+		switch(optionMenu){
+			case 1:{
+					addEntryToInventory();
+				break;
+			}
+
+			case 2:{
+					displayAllEntrys();
+				break;
+			}
+			
+			case 3:{
+					SupervisorPanel sp = SupervisorPanel();
+					sp.displayPanel();
+				break;
+			}
+
+			default:{
+					SupervisorPanel sp = SupervisorPanel();
+					sp.displayPanel();
+				break;
+			}
+		}
+		
+	invGotoxy(0,30);
 }
 
 void InventoryModule::displayModule(){
@@ -785,7 +900,7 @@ void InventoryModule::displayAllEntrys(){
 		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
 		cout << "|                                                                      LISTADO DE REGISTROS BIBLIOTECA                                                                       |" << endl;
 		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
-		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial     | Año de Publicacion | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
+		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial     | AÃ±o de Publicacion | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
 		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
 		
 		int firstLine = 7;
@@ -876,7 +991,7 @@ void InventoryModule::editEntryOfInventory(){
 		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
 		cout << "|                                                               EDITAR REGISTRO DEL LISTADO DE REGISTROS BIBLIOTECA                                                          |" << endl;
 		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
-		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial     | Año de Publicacion | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
+		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial     | Aï¿½o de Publicacion | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
 		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
 		
 		int firstLine = 7;
@@ -1175,7 +1290,7 @@ void InventoryModule::deleteEntryOfInventory(){
 		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
 		cout << "|                                                               ELIMINAR REGISTO DEL LISTADO DE REGISTROS BIBLIOTECA                                                         |" << endl;
 		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
-		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial     | Año de Publicacion | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
+		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial     | Aï¿½o de Publicacion | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
 		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
 		
 		int firstLine = 7;

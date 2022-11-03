@@ -12,8 +12,6 @@ class Book
 	public:
 		Book();
 		Book(string,string,string,vector<string>,string,int,int,double,int,int,bool,string);
-		//Book(string,string,vector<string>,string,int,int,int,int,bool,string);
-		
 		
 		void setBookTitle(string);
 		string getBookTitle();

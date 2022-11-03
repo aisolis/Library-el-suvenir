@@ -71,9 +71,9 @@ int LoginForm::initializeLogin() {
 	bool badLoginError = false;
 reset:
 	/*
-		0 = normal user
-		1 = supervisor user
-		2 = admin user
+		1 = normal user
+		2 = supervisor user
+		3 = admin user
 	*/
 	
 	string user,password;

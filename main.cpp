@@ -2,6 +2,8 @@
 
 #include "classes/loginForm.h"
 #include "classes/modules/adminModule/adminPanel.h"
+#include "classes/modules/SuperModule/SupervisorPanel.h"
+#include "classes/modules/OperatorModule/OperatorPanel.h"
 #include <windows.h>
 
 COORD mainCoord = {0,0};
@@ -38,34 +40,30 @@ int main(int argc, char** argv) {
 	switch(lf.initializeLogin()){
 		case 1:{
 			system("CLS");
-			AdminPanel ap2 = AdminPanel();
-			ap2.setlogedUser(lf.getUserLoged());
- 			ap2.displayPanelAdmin();
+			OperatorPanel op = OperatorPanel();
+			op.setlogedUser(lf.getUserLoged());
+ 			op.displayPanel();
 			break;
 		}
 		
 		case 2:{
 			system("CLS");
-			AdminPanel ap2 = AdminPanel();
-			ap2.setlogedUser(lf.getUserLoged());
- 			ap2.displayPanelAdmin();
+			SupervisorPanel sp = SupervisorPanel();
+			sp.setlogedUser(lf.getUserLoged());
+ 			sp.displayPanel();
 			break;
 		}
 		
 		case 3:{
 			system("CLS");
-			AdminPanel ap2 = AdminPanel();
-			ap2.setlogedUser(lf.getUserLoged());
- 			ap2.displayPanelAdmin();
+			AdminPanel ap = AdminPanel();
+			ap.setlogedUser(lf.getUserLoged());
+ 			ap.displayPanelAdmin();
 			break;
 		}
 		
 		default:
-			AdminPanel ap2 = AdminPanel();
-			ap2.setlogedUser(lf.getUserLoged());
- 			ap2.displayPanelAdmin();
-			system("CLS");
-			
+			exit(0);
 		break;	
 	}
 	

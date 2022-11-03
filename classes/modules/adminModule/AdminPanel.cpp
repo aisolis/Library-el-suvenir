@@ -30,8 +30,6 @@ AdminPanel::AdminPanel(){
 
 void AdminPanel::displayPanelAdmin(){
 	
-	
-resetPanel:
 	system("CLS");	
 	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 	cout << "|                                            BIBLIOTECA EL PORVENIR                   Bienvenido:                     |" << endl;
@@ -81,6 +79,7 @@ resetPanel:
 		}
 		
 		case 5:{
+			exit(0);
 			break;
 		}
 		
