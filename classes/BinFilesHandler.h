@@ -22,6 +22,9 @@ class BinFilesHandler
 		bool masiveBulk();
 		void copytemplate();
 		bool downloadInventory();
+		vector<User> readAllUsers();
+		void cleanUserFile();
+		bool editOnUser(vector<User>);
 	private:
 		verifyHash(string);
 		vector<Book> readMasiveBulkCsv();

@@ -118,15 +118,14 @@ reset:
 
  bool LoginForm::loginUser(string user, string pwd){
  	
- 	long cel = 1;
- 	//User usernameToWrite = User(user, pwd,1,cel);
  	
  	User username = User(user, pwd);
  	BinFilesHandler bh = BinFilesHandler();
  	
  	User aux = bh.searchUser(username);
  	
- 	if(aux.getPwd() == verifypwdHash(pwd)){
+ 	
+ 	if(verifypwdHash(aux.getPwd()) == verifypwdHash(pwd)){
  		LoginForm::userLoged = aux.getUser();
  		switch(aux.getRol()){
  			
@@ -151,14 +150,7 @@ reset:
  		return true;
 	 }else{
 	 	return false;
-	 }
- 	
-	 /*if(bh.writeUserFile(usernameToWrite)){
- 		cout << usernameToWrite.getUser() << usernameToWrite.getPwd() << usernameToWrite.getRol() << usernameToWrite.getId() <<endl;	
-	 }else{
-	 	cout << "tenemos clavos chavo" <<endl;	
-	 }*/
-	 
+	 }	 
  } 
  
  

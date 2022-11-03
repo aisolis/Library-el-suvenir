@@ -202,7 +202,7 @@ void InventoryModule::addEntryToInventory(){
 	invGotoxy(27,18);
 	cin >> option;
 
-	if(toupper(option) == 'S' || tolower(option) == 's'){
+	if(tolower(option) == 's'){
 		invGotoxy(0,18);
 		InventoryModule::validateForm(title, autor, category, descVector, editorial, anio, pages, price, stock, false);
 	}else{
@@ -292,7 +292,7 @@ void InventoryModule::validateForm(string title, string autor, string category, 
 			invGotoxy(107,7);
 			cout << "| STATUS: ERROR: CAMPO VACIO!|";
 		}else{
-			invGotoxy(0,6);
+			invGotoxy(0,7);
 			cout << "| Categoria/s del libro:                                                 | STATUS: ERROR: CAMPO VACIO!|";	
 		}
 		errorCount += 1;
@@ -574,7 +574,7 @@ void InventoryModule::validateForm(string title, string autor, string category, 
 			}else{
 				while(toupper(opt2) != 'S'){
 				invGotoxy(0,18);
-				cout << "| Libro no editado en el inventario, aceptar S:                            | FORMULARIO:  CON ERROR   |";
+				cout << "| Libro no editado en el inventario con exito, aceptar? S:                |                                 | FORMULARIO:  CON ERROR    |";
 	
 				invGotoxy(56,18);
 				cin >> opt2;	
@@ -852,9 +852,9 @@ void InventoryModule::displayAllEntrys(){
 		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
 
 	while(toupper(opt) != 'S'){
-		invGotoxy(0,firstLine+3);
+		invGotoxy(0,firstLine+2);
 		cout << "| Su opcion:                                                                                                                |" << endl;	
-		invGotoxy(13,firstLine+3);
+		invGotoxy(13,firstLine+2);
 		cin >> opt;	
 	}
 	
@@ -936,7 +936,7 @@ void InventoryModule::editEntryOfInventory(){
 		
 		firstLine += 2;
 	}
-		cout << "| Escriba el nombre del libro que desea editar o escriba cancelar para volver al menu principal                                                                              |" << endl;	
+		cout << "| Escriba el nombre del libro que desea editar o escriba cualquier palabra para volver al menu principal                                                                     |" << endl;	
 		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
 		cout << "| Titulo del Libro:                                                                                                                                                          |" << endl;	
 		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
@@ -945,16 +945,19 @@ void InventoryModule::editEntryOfInventory(){
 		
 		getline(cin, opt);
 		
-		if(opt != "cancelar"){
-			for(int y = 0; y < books.size();y++){
-				if(opt == books[y].getBookTitle()){
-					editEntry(books, y);
-				}
-			}	
-		}else{
-			displayModule();
-		}
+		std::for_each(opt.begin(), opt.end(), [](char & c){
+	    	c = ::tolower(c);
+		});
 		
+		
+		
+		for(int y = 0; y < books.size();y++){
+			if(opt == books[y].getBookTitle()){
+				editEntry(books, y);
+			}
+		}	
+		
+		displayModule();
 }
 
 void InventoryModule::editEntry(vector<Book> books, int index){
@@ -1232,7 +1235,7 @@ void InventoryModule::deleteEntryOfInventory(){
 		
 		firstLine += 2;
 	}
-		cout << "| Escriba el nombre del libro que desea eliminar o escriba cancelar para volver al menu principal                                                                            |" << endl;	
+		cout << "| Escriba el nombre del libro que desea eliminar o escriba cualquier cosa para volver al menu principal                                                                      |" << endl;	
 		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
 		cout << "| Titulo del Libro:                                                                                                                                                          |" << endl;	
 		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
@@ -1241,39 +1244,40 @@ void InventoryModule::deleteEntryOfInventory(){
 		
 		getline(cin, opt);
 		
+		std::for_each(opt.begin(), opt.end(), [](char & c){
+	    	c = ::tolower(c);
+		});
 		
-		if(opt != "cancelar"){
-			for(int y = 0; y < books.size();y++){
-				
-				if(opt == books[y].getBookTitle()){
-					vector<Book> aux = books;
-					aux.erase(aux.begin()+y);
-					
-					char opt2;
-					
-					if(bfh.editOnInventory(aux)){
-						while(toupper(opt2) != 'S'){
-							invGotoxy(0,firstLine+2);
-							cout << "| Libro eliminado en el inventario con exito, aceptar? S:                                       | FORMULARIO:  FINALIZADO    ";
-							invGotoxy(58,firstLine+2);
-							cin >> opt2;	
-						}	
-					}else{
-						while(toupper(opt2) != 'S'){
-						invGotoxy(0,firstLine+2);
-						cout << "| Libro no eliminado en el inventario, aceptar S:                                                | FORMULARIO:  CON ERROR    ";
+		for(int y = 0; y < books.size();y++){
 			
+			if(opt == books[y].getBookTitle()){
+				vector<Book> aux = books;
+				aux.erase(aux.begin()+y);
+				
+				char opt2;
+				
+				if(bfh.editOnInventory(aux)){
+					while(toupper(opt2) != 'S'){
+						invGotoxy(0,firstLine+2);
+						cout << "| Libro eliminado en el inventario con exito, aceptar? S:                                       | FORMULARIO:  FINALIZADO    ";
 						invGotoxy(58,firstLine+2);
 						cin >> opt2;	
-						}
-					}
-					invGotoxy(0,0);
-					InventoryModule::deleteEntryOfInventory();	
+					}	
 				}else{
-					cout << "error" << endl;
+					while(toupper(opt2) != 'S'){
+					invGotoxy(0,firstLine+2);
+					cout << "| Libro no eliminado en el inventario, aceptar S:                                                | FORMULARIO:  CON ERROR    ";
+		
+					invGotoxy(58,firstLine+2);
+					cin >> opt2;	
+					}
 				}
-			}	
-		}else{
-			displayModule();
-		}
+				invGotoxy(0,0);
+				InventoryModule::deleteEntryOfInventory();	
+			}else{
+				continue;
+			}
+		}	
+		displayModule();
+		
 }

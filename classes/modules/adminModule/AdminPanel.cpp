@@ -1,5 +1,6 @@
 #include "AdminPanel.h"
 #include "subModules/inventoryModule/InventoryModule.h"
+#include "subModules/usersModule/UserModule.h"
 #include "subModules/masiveModule/MasiveModule.h"
 
 #include <iostream>
@@ -74,10 +75,17 @@ resetPanel:
 		}
 		
 		case 4:{
+			UserModule um = UserModule();
+			um.displayModule();
 			break;
 		}
 		
 		case 5:{
+			break;
+		}
+		
+		default:{
+			displayPanelAdmin();
 			break;
 		}
 	}

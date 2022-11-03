@@ -41,47 +41,41 @@ BinFilesHandler::BinFilesHandler(){
 
 User BinFilesHandler::searchUser(User user){
 		
-	User aux;
+	User ret;
 	try{
-		fstream fh("secrets\\keys.bin", ios::out | ios::in | ios::binary);
-	
-		if(fh.is_open()){
-			fh.seekg((verifyHash(user.getUser()))*sizeof(User));
-			fh.read((char*)&aux,sizeof(User));
-			fh.close();		
-		}else{
-			throw (999);
+		
+		vector<User> users = readAllUsers();
+		
+		for(int x = 0; x < users.size(); x++){
+			User aux = users[x];
+			if(aux.getUser() == user.getUser()){
+				ret = aux;
+				break;
+			}else{
+				ret.setUser("");
+			}
 		}
-		
-		aux.setPassword(std::to_string(verifyHash(aux.getPwd())));
-		
-	}catch(int err){
-		aux.setUser("");
-		aux.setPassword("");
-	}
-	
-	return aux;
+	}catch(int err){}
+	return ret;
 }
+
 
 bool BinFilesHandler::writeUserFile(User user){
 	
 	try{
-		fstream fh("secrets\\keys.bin", ios::out | ios::in | ios::binary);
-		
+		ofstream fh("secrets\\keys.bin", ios::app);
 		if(fh.is_open()){
-			fh.seekg((verifyHash(user.getUser()))*sizeof(User));
-			fh.write((char*)&user, sizeof(User));
+			fh << "" << user.getUser() << "," <<  user.getPwd() << "," << user.getRol() << "," <<  verifyHash(user.getUser()) << endl;
 			fh.close();
-			
 			return true;
 		}else{
 			throw (999);
 		}	
-		
-		
-	}catch(int err){
+
+	}catch(bool ex){
 		return false;
 	}
+	
 }
 
 int BinFilesHandler::verifyHash (string str) {
@@ -135,6 +129,41 @@ void BinFilesHandler::cleanFile(){
 	}
 }
 
+bool BinFilesHandler::editOnUser(vector<User> users){
+	try{
+		ofstream fh("secrets\\keys.bin", ios::app);
+		cleanUserFile();
+		if(fh.is_open()){
+			for(int z = 0; z < users.size();z++){	
+				fh << users[z].getUser() << "," <<  users[z].getPwd() << "," << users[z].getRol() << "," <<  users[z].getId()<< std::endl;
+			}			
+			fh.close();
+			return true;
+		}else{
+			throw (999);
+		}	
+
+	}catch(bool ex){
+		return false;
+	}
+
+	return true;
+}
+
+void BinFilesHandler::cleanUserFile(){
+	try{
+	   fstream fh("secrets\\keys.bin", ios::out);
+	   vector<User> offset = readAllUsers();
+	   if(fh.is_open()){
+	   		for(int y = 0; y < offset.size()+1; y++){
+	   			fh.seekg((y)*sizeof(User));
+	   			fh <<"";
+	   		}
+	   }	fh.close();
+	}catch(bool ex){
+	}
+}
+
 bool BinFilesHandler::editOnInventory(vector<Book> books){
 	try{
 		ofstream fh("libraryFiles\\inventory.csv", ios::app);
@@ -154,6 +183,61 @@ bool BinFilesHandler::editOnInventory(vector<Book> books){
 	}
 
 	return true;
+}
+
+vector<User> BinFilesHandler::readAllUsers(){
+	vector<User> users;
+	try{
+		ifstream infile;
+		string line = "";
+		int c = 0;
+		int w = 0;
+
+		infile.open("secrets\\keys.bin", ios::in);
+		
+		while(getline(infile,line)){
+			w++;
+			c=0;
+			
+			stringstream strstr(line);	
+			string word="";
+			
+			User user = User();
+			while(getline(strstr, word, ',')){
+				c++;
+				switch(c){
+					case 1:{
+						user.setUser(word);
+						break;
+					}
+					case 2:{
+						user.setPassword(word);
+						break;
+					}
+					case 3:{
+						int rolParsed;
+						std::istringstream (word) >> rolParsed;
+						user.setRol(rolParsed);
+						break;
+					}
+					case 4:{
+						int idParsed;
+						std::istringstream (word) >> idParsed;
+						user.setId(idParsed);
+						break;
+					}
+					default:{
+						break;
+					}
+				}
+			}
+			users.push_back(user);
+		}
+		
+		return users;
+	}catch(bool ex){
+		return users;
+	}
 }
 
 vector<Book> BinFilesHandler::readALLInventory(){

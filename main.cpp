@@ -36,14 +36,14 @@ int main(int argc, char** argv) {
 	LoginForm lf = LoginForm();
 	
 	switch(lf.initializeLogin()){
-		case 0:{
+		case 1:{
 			system("CLS");
 			AdminPanel ap1 = AdminPanel();
  			//ap1.displayPanelAdmin();
 			break;
 		}
 		
-		case 1:{
+		case 2:{
 			system("CLS");
 			AdminPanel ap2 = AdminPanel();
 			ap2.setlogedUser(lf.getUserLoged());
@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
 			break;
 		}
 		
-		case 2:{
+		case 3:{
 			system("CLS");
 			AdminPanel ap3 = AdminPanel();
  			//ap3.displayPanelAdmin();
@@ -60,6 +60,7 @@ int main(int argc, char** argv) {
 		
 		default:
 			system("CLS");
+			
 		break;	
 	}
 	
