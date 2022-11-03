@@ -40,7 +40,6 @@ void OperatorPanel::displayPanel(){
 	cout << "|                                                                                                                     |" << endl;
 	cout << "|                                                                                                                     |" << endl;
 	cout << "|                                                                                                                     |" << endl;
-	cout << "|                                                                                                                     |" << endl;
 	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 	cout << "| Para ingresar presiona enter...                                                                                     |" << endl;	
 	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
@@ -61,8 +60,8 @@ void OperatorPanel::displayPanel(){
         }
 
         case 2:{
-            MasiveModule mm = MasiveModule();
-            //mm.displayMasiveModuleSupervisor();
+            InventoryModule im = InventoryModule();
+            im.borrowABook();
             break;
         }
 

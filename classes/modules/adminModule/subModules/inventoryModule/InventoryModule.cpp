@@ -777,7 +777,7 @@ void InventoryModule::throwAlert(vector<Book> books, int index){
 		cin >> opt;
 	}while(tolower(opt) != 's');
 	
-	editEntry(books, index);
+	editEntry(books, index, false);
 	
 }
 
@@ -1067,14 +1067,14 @@ void InventoryModule::editEntryOfInventory(){
 		
 		for(int y = 0; y < books.size();y++){
 			if(opt == books[y].getBookTitle()){
-				editEntry(books, y);
+				editEntry(books, y, false);
 			}
 		}	
 		
 		displayModule();
 }
 
-void InventoryModule::editEntry(vector<Book> books, int index){
+void InventoryModule::editEntry(vector<Book> books, int index, bool isABorrow){
 	
 	
 	vector<string> descVector;
@@ -1096,7 +1096,7 @@ void InventoryModule::editEntry(vector<Book> books, int index){
 	cout << "+------------------------------------------------------------------------+----------------------------+\n"
             "|                         BIBLIOTECA EL PORVENIR                         |         VALIDACIONES       |\n" 
             "+------------------------------------------------------------------------+----------------------------+\n"
-            "|                      AGREGAR ENTRADA AL INVENTARIO                     |  VALIDACION DE FORMULARIO  |\n"
+            "|                         ENTRADA EN EL INVENTARIO                       |  VALIDACION DE FORMULARIO  |\n"
 			"+------------------------------------------------------------------------+----------------------------+\n"
 			"| Nombre del libro:                                                      | STATUS:                    |\n"
 			"| Nombre del Autor:                                                      | STATUS:                    |\n"
@@ -1110,10 +1110,14 @@ void InventoryModule::editEntry(vector<Book> books, int index){
 			"| Numero de paginas:                                                     | STATUS:                    |\n"
 			"| Precio de venta/alquiler:                                              | STATUS:                    |\n"
 			"| Cantidad de existencias en stock:                                      | STATUS:                    |\n"
-			"+------------------------------------------------------------------------+----------------------------+\n"
-			"| Confirmar edicion S/N:                                                 | FORMULARIO:                |\n"
-			"+------------------------------------------------------------------------+----------------------------+\n"
-	<< endl;
+			"+------------------------------------------------------------------------+----------------------------+\n";	
+	if(!isABorrow){
+		cout <<	"| Confirmar edicion S/N:                                                 | FORMULARIO:                |\n"
+			    "+------------------------------------------------------------------------+----------------------------+\n" << endl;			
+	}else{
+		cout <<	"| Confirmar este libro para alquilar/vender S/N:                         | FORMULARIO:                |\n"
+			    "+------------------------------------------------------------------------+----------------------------+\n" << endl;
+	}
 	
 	Book preview = books[index];
 	
@@ -1156,118 +1160,132 @@ void InventoryModule::editEntry(vector<Book> books, int index){
 	invGotoxy(36,16);
 	cout << preview.getStock()<<endl;  
 	
-	invGotoxy(25,18);
-	cin >> option;
+	if(isABorrow){
+		invGotoxy(49,18);
+		cin >> option;
+	}else{
+		invGotoxy(25,18);
+		cin >> option;
+	}	
 
 	if(toupper(option) == 'S' || tolower(option) == 's'){
-		system("CLS");
-		cout << "+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
-	            "|                         BIBLIOTECA EL PORVENIR                         |        INFORMACION ACTUAL       |         VALIDACIONES       |\n" 
-	            "+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
-	            "|                      EDITAR ENTRADA AL INVENTARIO                      |                                 |                            |\n"
-				"+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
-				"| Nombre del libro:                                                      | PREV:                           | STATUS:                    |\n"
-				"| Nombre del Autor:                                                      | PREV:                           | STATUS:                    |\n"
-				"| Categoria/s del libro:                                                 | PREV:                           | STATUS:                    |\n"
-				"| Descripcion del libro:                                                 | PREV:                           | STATUS:                    |\n"
-				"|                                                                        |                                 |                            |\n"
-				"|                                                                        |                                 |                            |\n"
-				"|                                                                        |                                 |                            |\n"
-				"| Nombre de la editorial:                                                | PREV:                           | STATUS:                    |\n"
-				"| Anio de publicacion:                                                   | PREV:                           | STATUS:                    |\n"
-				"| Numero de paginas:                                                     | PREV:                           | STATUS:                    |\n"
-				"| Precio de venta/alquiler:                                              | PREV:                           | STATUS:                    |\n"
-				"| Cantidad de existencias en stock:                                      | PREV:                           | STATUS:                    |\n"
-				"+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
-				"| Confirmar esta edicion S/N:                                            |                                 | FORMULARIO:                |\n"
-				"+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
-		<< endl;
-		
-		invGotoxy(81,5);
-		cout << preview.getBookTitle()<<endl;
-		
-		invGotoxy(81,6);
-		cout << preview.getAutor()<<endl;
-		
-		invGotoxy(81,7);
-		cout << preview.getCategory()<<endl;
-		
-		invGotoxy(81,8);
-		int counter2 = 8;
-		vector<string> desc;
-		desc = preview.getDescription();
-		for(int u = 0; u < desc.size(); u++){
-			if(u > 0){
-				invGotoxy(81,8);	
-				cout << desc[u]<<endl;
-			}else{
-				invGotoxy(75,++counter2);	
-				cout << desc[u]<<endl;
-			}		
-		}
-		
-		
-		invGotoxy(81,12);
-		cout << preview.getEditorial()<<endl;  
-		
-		invGotoxy(81,13);
-		cout << preview.getPublicationYear()<<endl;  
-		
-		invGotoxy(81,14);
-		cout << preview.getPagesNumbers()<<endl;  
-		
-		invGotoxy(81,15);
-		cout << preview.getPrice()<<endl;  
-		
-		invGotoxy(81,16);
-		cout << preview.getStock()<<endl;  
-		
-		
-		invGotoxy(20,5);
-		cin.ignore();
-		getline(cin, title);
-		
-		invGotoxy(20,6);
-		getline(cin, autor);
-		
-		invGotoxy(25,7);
-		getline(cin, category);
-		
-		invGotoxy(25,8);
-		counter = 8;
-		while (getline(cin, description))
-	    {	invGotoxy(2,++counter);
-	        if (description.empty() || counter > 10) {        	
-	            break;
-	        }
-	        descVector.push_back(description);
-	    }
-		
-		invGotoxy(26,12);
-		getline(cin, editorial);
-		
-		invGotoxy(23,13);
-		getline(cin, anio);
-		
-		invGotoxy(21,14);
-		getline(cin, pages);
-		
-		invGotoxy(28,15);
-		getline(cin, price);
-		
-		invGotoxy(36,16);
-		getline(cin, stock);
-		
-		invGotoxy(30,18);
-		cin >> option;
-	
-		if(toupper(option) == 'S' || tolower(option) == 's'){
-			InventoryModule::editingVector = books;
-			indexvector = index;
-			InventoryModule::validateForm(title, autor, category, descVector, editorial, anio, pages, price, stock, true);
+		if(isABorrow){
+			displayBorrowScreen(books, index);
 		}else{
-			editEntryOfInventory();	
+			system("CLS");
+			cout << "+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
+					"|                         BIBLIOTECA EL PORVENIR                         |        INFORMACION ACTUAL       |         VALIDACIONES       |\n" 
+					"+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
+					"|                         ENTRADA DE EL INVENTARIO                       |                                 |                            |\n"
+					"+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
+					"| Nombre del libro:                                                      | PREV:                           | STATUS:                    |\n"
+					"| Nombre del Autor:                                                      | PREV:                           | STATUS:                    |\n"
+					"| Categoria/s del libro:                                                 | PREV:                           | STATUS:                    |\n"
+					"| Descripcion del libro:                                                 | PREV:                           | STATUS:                    |\n"
+					"|                                                                        |                                 |                            |\n"
+					"|                                                                        |                                 |                            |\n"
+					"|                                                                        |                                 |                            |\n"
+					"| Nombre de la editorial:                                                | PREV:                           | STATUS:                    |\n"
+					"| Anio de publicacion:                                                   | PREV:                           | STATUS:                    |\n"
+					"| Numero de paginas:                                                     | PREV:                           | STATUS:                    |\n"
+					"| Precio de venta/alquiler:                                              | PREV:                           | STATUS:                    |\n"
+					"| Cantidad de existencias en stock:                                      | PREV:                           | STATUS:                    |\n"
+					"+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
+					"| Confirmar este libro para alquilar/vender S/N:                         |                                 | FORMULARIO:                |\n"
+					"+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"<< endl;
+				
+			invGotoxy(81,5);
+			cout << preview.getBookTitle()<<endl;
+			
+			invGotoxy(81,6);
+			cout << preview.getAutor()<<endl;
+			
+			invGotoxy(81,7);
+			cout << preview.getCategory()<<endl;
+			
+			invGotoxy(81,8);
+			int counter2 = 8;
+			vector<string> desc;
+			desc = preview.getDescription();
+			for(int u = 0; u < desc.size(); u++){
+				if(u > 0){
+					invGotoxy(81,8);	
+					cout << desc[u]<<endl;
+				}else{
+					invGotoxy(75,++counter2);	
+					cout << desc[u]<<endl;
+				}		
+			}
+			
+			
+			invGotoxy(81,12);
+			cout << preview.getEditorial()<<endl;  
+			
+			invGotoxy(81,13);
+			cout << preview.getPublicationYear()<<endl;  
+			
+			invGotoxy(81,14);
+			cout << preview.getPagesNumbers()<<endl;  
+			
+			invGotoxy(81,15);
+			cout << preview.getPrice()<<endl;  
+			
+			invGotoxy(81,16);
+			cout << preview.getStock()<<endl;  
+			
+			
+			invGotoxy(20,5);
+			cin.ignore();
+			getline(cin, title);
+			
+			invGotoxy(20,6);
+			getline(cin, autor);
+			
+			invGotoxy(25,7);
+			getline(cin, category);
+			
+			invGotoxy(25,8);
+			counter = 8;
+			while (getline(cin, description))
+			{	invGotoxy(2,++counter);
+				if (description.empty() || counter > 10) {        	
+					break;
+				}
+				descVector.push_back(description);
+			}
+			
+			invGotoxy(26,12);
+			getline(cin, editorial);
+			
+			invGotoxy(23,13);
+			getline(cin, anio);
+			
+			invGotoxy(21,14);
+			getline(cin, pages);
+			
+			invGotoxy(28,15);
+			getline(cin, price);
+			
+			invGotoxy(36,16);
+			getline(cin, stock);
+
+			if(isABorrow){
+				invGotoxy(49,18);
+				cin >> option;
+			}else{
+				invGotoxy(30,18);
+				cin >> option;
+			}
+		
+			if(toupper(option) == 'S' || tolower(option) == 's'){
+				InventoryModule::editingVector = books;
+				indexvector = index;
+				InventoryModule::validateForm(title, autor, category, descVector, editorial, anio, pages, price, stock, true);
+			}else{
+				editEntryOfInventory();	
+			}
 		}
+		
 	}else{
 		editEntryOfInventory();
 	}
@@ -1290,7 +1308,7 @@ void InventoryModule::deleteEntryOfInventory(){
 		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
 		cout << "|                                                               ELIMINAR REGISTO DEL LISTADO DE REGISTROS BIBLIOTECA                                                         |" << endl;
 		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
-		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial     | A�o de Publicacion | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
+		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial     |  Anio Publicacion  | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
 		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
 		
 		int firstLine = 7;
@@ -1394,4 +1412,227 @@ void InventoryModule::deleteEntryOfInventory(){
 		}	
 		displayModule();
 		
+}
+
+void InventoryModule::borrowABook(){
+	system("CLS");
+		BinFilesHandler bfh = BinFilesHandler();
+	
+		vector<Book> books = bfh.readALLInventory();
+		
+		string opt;
+		
+		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                                                          BIBLIOTECA EL PORVENIR                                                                            |" << endl;
+		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|                                                                  ALQUILER Y VENTA DE LIBROS DE LA BIBLIOTECA                                                               |" << endl;
+		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
+		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial     |  Anio Publicacion  | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
+		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
+		
+		int firstLine = 7;
+		int modifier = 2;
+	for(int x = 0; x < books.size(); x++){
+		Book tmpB = books[x];
+		
+		invGotoxy(0,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(2,(firstLine));
+		cout <<	truncate(tmpB.getBookTitle(),26, true);
+		
+		
+		invGotoxy(29,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(31,(firstLine));
+		cout <<	truncate(tmpB.getAutor(),15, true);
+		
+		
+		invGotoxy(47,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(49,(firstLine));
+		cout <<	truncate(tmpB.getCategory(),16, true);
+		
+		
+		invGotoxy(66,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(68,(firstLine));
+		cout <<	truncate(tmpB.getEditorial(),17, true);
+		
+		
+		invGotoxy(86,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(88,(firstLine));
+		cout <<	truncate(std::to_string(tmpB.getPublicationYear()),18, true);
+		
+		
+		invGotoxy(107,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(109,(firstLine));
+		cout <<	truncate(std::to_string(tmpB.getPagesNumbers()),17, true);
+		
+		invGotoxy(127,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(129,(firstLine));
+		cout <<	truncate(std::to_string(tmpB.getPrice()),23, true);
+		
+		
+		invGotoxy(153,(firstLine));
+		cout << "|" << endl;
+		invGotoxy(155,(firstLine));
+		cout <<	truncate(std::to_string(tmpB.getStock()),17, true);
+		invGotoxy(173,(firstLine));
+		cout << "|" << endl;
+		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" <<endl;
+		
+		firstLine += 2;
+	}
+
+		cout << "| Escriba el nombre del libro que desea alquilar o vender o escriba cualquier cosa para volver al menu principal                                                                      |" << endl;	
+		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "| Titulo del Libro:                                                                                                                                                          |" << endl;	
+		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
+		invGotoxy(20,firstLine+2);
+		cin.ignore();	
+		
+		getline(cin, opt);
+		
+		std::for_each(opt.begin(), opt.end(), [](char & c){
+	    	c = ::tolower(c);
+		});
+		
+		for(int y = 0; y < books.size();y++){
+			
+			if(opt == books[y].getBookTitle()){
+					editEntry(books, y, true);
+			}else{
+				continue;
+			}
+		}	
+		displayInventoryModuleOperator();
+
+}
+
+void InventoryModule::displayBorrowScreen(vector<Book> books, int index){
+	system("CLS");
+			cout << "+---------------------------------------------------------------------------------+" << endl;
+			cout << "|                              BIBLIOTECA EL PORVENIR                             |" << endl;
+			cout << "+---------------------------------------------------------------------------------+" << endl;
+			cout << "|                    ALQUILER Y VENTA DE LIBROS DE LA BIBLIOTECA                  |" << endl;
+			cout << "+---------------------------------------------------------------------------------+" << endl;
+			cout << "|                                                                                 |" << endl;
+			cout << "| Rellene los datos solicitados, tomar en cuenta que por prestamos el importe     |" << endl;
+			cout << "| total es Q.0.00, el precio solo sera tomado para ventas.                        |" << endl;
+			cout << "|                                                                                 |" << endl;
+			cout << "| Nombre del cliente:                                                             |" << endl;
+			cout << "| Direccion del cliente:                                                          |" << endl;
+			cout << "| Telefono del cliente:                                                           |" << endl;
+			cout << "| NIT del cliente:                                                                |" << endl;
+			cout << "| Escriba [v] para venta o [a] para alquiler:                                     |" << endl;
+			cout << "| Libro Solicitado:                                                               |" << endl;
+			cout << "| Precio:                                                                         |" << endl;
+			cout << "| Stock disponible:                                                               |" << endl;
+			cout << "| Cantidad solicitada:                                                            |" << endl;
+			cout << "| Fecha de devolucion:                                                            |" << endl;
+			cout << "| Fecha del prestamo / venta:                                                     |" << endl;
+			cout << "| Correo para factura:                                                            |" << endl;
+			cout << "|                                                                                 |" << endl;
+			cout << "+---------------------------------------------------------------------------------+" << endl;
+			cout << "| Sub total:                                            Grand Total:              |" << endl;
+			cout << "+---------------------------------------------------------------------------------+" << endl;
+			cout << "| Informacion correcta? S/N:                                                      |" << endl;
+			cout << "+---------------------------------------------------------------------------------+" << endl;
+
+			string clientName;
+			string clientAddress;
+			string telefono;
+			string nit;
+			string transaction;
+			string cantidad;
+			string fechaDevolucion;
+			string fechaPrestamo;
+			string correo;
+
+			char option;
+
+		Book aux = books[index];
+		cin.ignore();
+
+		invGotoxy(20,14);
+		cout << aux.getBookTitle() << endl;
+
+		invGotoxy(20,16);
+		cout << aux.getStock() << endl;
+
+		invGotoxy(22,9);
+		getline(cin, clientName);
+
+		invGotoxy(25,10);
+		getline(cin, clientAddress);
+
+		invGotoxy(24,11);
+		getline(cin, telefono);
+
+		invGotoxy(19,12);
+		getline(cin, nit);
+
+	invalid:
+		cin.ignore();
+
+		invGotoxy(46,13);
+		getline(cin, transaction);
+
+		std::for_each(transaction.begin(), transaction.end(), [](char & c){
+	    	c = ::tolower(c);
+		});
+
+		if(transaction != "v" || transaction != "a"){
+			goto invalid;
+		}else{
+			if(transaction == "v"){
+				invGotoxy(10,15);
+				cout << aux.getPrice() << endl;
+
+				invGotoxy(23,17);
+				getline(cin, cantidad);
+
+				invGotoxy(23,18);
+				cout << "Es venta" << endl;
+
+				invGotoxy(30,19);
+				cout << "hoy" << endl;
+
+				invGotoxy(23,20);
+				getline(cin, correo);
+			}else if(transaction == "a"){
+				invGotoxy(10,15);
+				cout << 0.00 << endl;
+
+				invGotoxy(23,17);
+				cout << 1 << endl;
+
+				invGotoxy(23,18);
+				getline(cin, fechaDevolucion);
+
+				invGotoxy(30,19);
+				cout << "hoy" << endl;
+
+				invGotoxy(23,20);
+				cout << "No aplica debido a prestamo" << endl;
+			}
+
+				invGotoxy(23,23);
+				cout << "No aplica debido a prestamo" << endl;
+
+				invGotoxy(69,23);
+				cout << "No aplica debido a prestamo" << endl;
+
+
+			
+		}
+
+				
+
+		
+
+
 }
