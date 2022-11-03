@@ -38,8 +38,9 @@ int main(int argc, char** argv) {
 	switch(lf.initializeLogin()){
 		case 1:{
 			system("CLS");
-			AdminPanel ap1 = AdminPanel();
- 			//ap1.displayPanelAdmin();
+			AdminPanel ap2 = AdminPanel();
+			ap2.setlogedUser(lf.getUserLoged());
+ 			ap2.displayPanelAdmin();
 			break;
 		}
 		
@@ -53,12 +54,16 @@ int main(int argc, char** argv) {
 		
 		case 3:{
 			system("CLS");
-			AdminPanel ap3 = AdminPanel();
- 			//ap3.displayPanelAdmin();
+			AdminPanel ap2 = AdminPanel();
+			ap2.setlogedUser(lf.getUserLoged());
+ 			ap2.displayPanelAdmin();
 			break;
 		}
 		
 		default:
+			AdminPanel ap2 = AdminPanel();
+			ap2.setlogedUser(lf.getUserLoged());
+ 			ap2.displayPanelAdmin();
 			system("CLS");
 			
 		break;	

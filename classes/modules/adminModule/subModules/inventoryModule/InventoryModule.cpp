@@ -489,7 +489,6 @@ void InventoryModule::validateForm(string title, string autor, string category, 
 	if(stock.size() > 0){
 		int parsedStock;
 		std::istringstream (trim(stock)) >> parsedStock;
-		book.setStock(parsedStock);
 		if(parsedStock !=0){
 			if(isEdit){
 				invGotoxy(107,16);

@@ -129,19 +129,19 @@ reset:
  		LoginForm::userLoged = aux.getUser();
  		switch(aux.getRol()){
  			
- 			case 0:{
- 				LoginForm::userPermission = 0;
+ 			case 1:{
+ 				LoginForm::userPermission = 1;
  				break;
  			}
  			
- 			case 1:{
- 				LoginForm::userPermission = 1;
+ 			case 2:{
+ 				LoginForm::userPermission = 2;
 
 				break;
 			 }
  			
- 			case 2:{
- 				LoginForm::userPermission = 2;
+ 			case 3:{
+ 				LoginForm::userPermission = 3;
 
 				break;
 			 }

@@ -99,9 +99,9 @@ bool BinFilesHandler::writeOnInventory(Book book){
 	book.setBorrowedDate("sin prestar");
 
 	try{
-		ofstream fh("libraryFiles\\inventory.csv", ios::app);
+		ofstream fh("libraryFiles\\inventory.bin", ios::app);
 		if(fh.is_open()){
-			fh << "" << book.getBookTitle() << "," <<  book.getAutor() << "," << book.getCategory() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," << book.getPrice() <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << endl;
+			fh << "" << book.getBookTitle() << "," <<  book.getAutor() << "," << book.getCategory() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," << book.getPrice() << "," <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << endl;
 			fh.close();
 			return true;
 		}else{
@@ -117,7 +117,7 @@ bool BinFilesHandler::writeOnInventory(Book book){
 
 void BinFilesHandler::cleanFile(){
 	try{
-	   fstream fh("libraryFiles\\inventory.csv", ios::out);
+	   fstream fh("libraryFiles\\inventory.bin", ios::out);
 	   vector<Book> offset = readALLInventory();
 	   if(fh.is_open()){
 	   		for(int y = 0; y < offset.size()+1; y++){
@@ -166,7 +166,7 @@ void BinFilesHandler::cleanUserFile(){
 
 bool BinFilesHandler::editOnInventory(vector<Book> books){
 	try{
-		ofstream fh("libraryFiles\\inventory.csv", ios::app);
+		ofstream fh("libraryFiles\\inventory.bin", ios::app);
 		cleanFile();
 		if(fh.is_open()){
 			for(int z = 0; z < books.size();z++){	
@@ -248,7 +248,7 @@ vector<Book> BinFilesHandler::readALLInventory(){
 		int c = 0;
 		int w = 0;
 
-		infile.open("libraryFiles\\inventory.csv", ios::in);
+		infile.open("libraryFiles\\inventory.bin", ios::in);
 		
 		while(getline(infile,line)){
 			w++;
@@ -510,7 +510,7 @@ void BinFilesHandler::copytemplate(){
 
 bool BinFilesHandler::downloadInventory(){
 	system("cd..");
-	system("copy libraryFiles\\inventory.csv Downloads\\backups\\");
+	system("copy libraryFiles\\inventory.bin Downloads\\backups\\");
 	system("start Downloads\\backups");	
 	
 	return true;
