@@ -475,17 +475,18 @@ vector<Book> BinFilesHandler::readMasiveBulkCsv(){
 			
 		}
 		
-		for(int x = 0; x < books.size(); x++){			
-			Book tmp = books[x];
-			Book tmp2;
-			if(x < aux.size()){
-				tmp2 = aux[x];	
-				if(tmp.getBookTitle() == tmp2.getBookTitle()){
+		vector<string> titles;
+		for(int y = 0; y < books.size(); y++){
+			titles.push_back(books[y].getBookTitle());
+		}
+		
+		for(int x = 0; x < aux.size(); x++){			
+			if(std::binary_search(titles.begin(),titles.end(), aux[x].getBookTitle())){
 				continue;
-				}else{
-					books.push_back(aux[x]);	
-				}
+			}else{
+				books.push_back(aux[x]);
 			}
+			
 		}
 		
 		return books;
