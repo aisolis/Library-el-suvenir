@@ -142,7 +142,6 @@ reset:
  			
  			case 3:{
  				LoginForm::userPermission = 3;
-				bh.generateInventoryReportBySellings();
 				break;
 			 }
 			

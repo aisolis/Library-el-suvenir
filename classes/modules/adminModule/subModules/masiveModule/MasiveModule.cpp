@@ -50,7 +50,7 @@ void MasiveModule::displayMasiveModuleSupervisor(){
 		cout << "| Su opcion:                                                                                                          |" << endl;	
 		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 
-		masiveGotoxy(13,17);
+		masiveGotoxy(13,18);
 		cin >> parser;
 
 
@@ -97,7 +97,8 @@ void MasiveModule::displayModule(){
 		cout << "|                                                                                                                     |" << endl;
 		cout << "| 1) Carga masiva de inventario                                                                                       |" << endl;
 		cout << "| 2) Descarga masiva de inventario                                                                                    |" << endl;
-		cout << "| 3) Regresar al menu anterior                                                                                        |" << endl;
+		cout << "| 3) Eliminacion masiva de inventario                                                                                 |" << endl;
+		cout << "| 4) Regresar al menu anterior                                                                                        |" << endl;
 		cout << "|                                                                                                                     |" << endl;
 		cout << "|                                                                                                                     |" << endl;
 		cout << "|                                                                                                                     |" << endl;
@@ -125,11 +126,15 @@ void MasiveModule::displayModule(){
 			}
 			
 			case 3:{
+				masiveDelete();
+				break;
+			}
+			
+			case 4:{
 				AdminPanel ap = AdminPanel();
 				ap.displayPanelAdmin();
 				break;
 			}
-			
 			
 			default:{
 				displayModule();
@@ -387,5 +392,92 @@ void MasiveModule::masiveDownload(int rol){
 						break;
 					}
 				}
+	}
+}
+
+void MasiveModule::masiveDelete(){
+	system("CLS");
+	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+	cout << "|                                                BIBLIOTECA EL PORVENIR                                               |" << endl;
+	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+	cout << "|                                        MODULO DE MASIVOS ELIMINACION MASIVA DE DATOS                                |" << endl;
+	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+	cout << "| Bienvenido nuevamente estimado                                                                                      |" << endl;
+	cout << "| Instrucciones de uso:                                                                                               |" << endl;
+	cout << "|                                                                                                                     |" << endl;
+	cout << "| 1) Se realizara procedere a eliminar todos los productos sin stock del inventario actual                            |" << endl;
+	cout << "| 2) Media vez procesado el inventario y eliminado los productos sin stock, esto para eliminar basura del stock, por  |" << endl;
+	cout << "|    defecto los productos sin stock no son visualizados en pantalla para evitar que se intenten vender o alquilar.   |" << endl;
+	cout << "|                                                                                                                     |" << endl;
+	cout << "|                                                                                                                     |" << endl;
+	cout << "|                                                                                                                     |" << endl;
+	cout << "|                                                                                                                     |" << endl;
+	cout << "|                                                                                                                     |" << endl;
+	cout << "| x) Si desea regresar al menu y cancelar la eliminacion, escriba en el recuadro de texto 'Cancelar'                  |" << endl;
+	cout << "| x) Para confirmar la eliminacion de los datos, por favor escriba 'Confirmar'                                        |" << endl;
+	cout << "|                                                                                                                     |" << endl;
+	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+	cout << "| Para ingresar presiona enter...                                                                                     |" << endl;	
+	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+	cout << "| Su opcion:                                                                                                          |" << endl;	
+	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+	
+	BinFilesHandler bfh = BinFilesHandler();
+	
+	cin.ignore();
+	string opt,opt2;
+	
+	masiveGotoxy(13,22);
+	getline(cin, opt);
+	
+	std::for_each(opt.begin(), opt.end(), [](char & c){
+    c = ::tolower(c);
+	});
+	
+	if(opt == "confirmar"){
+		vector <Book> aux = bfh.readALLInventory();	
+		if(bfh.editOnInventory(aux)){
+			masiveGotoxy(0,20);
+			cout << "| Se ha finalizado la eliminacion masiva, por favor escriba 'aceptar' para ser llevado a la ventana principal         |" << endl;			
+			masiveGotoxy(0,22);
+			cout << "| Su opcion:                                                                                                          |" << endl;	
+			masiveGotoxy(0,23);
+			cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;		
+			
+			masiveGotoxy(13,22);
+			getline(cin, opt2);
+			
+			std::for_each(opt2.begin(), opt2.end(), [](char & c){
+		    c = ::tolower(c);
+			});
+			
+			if(opt2 == "aceptar"){
+				displayModule();
+			}else{
+				displayModule();	
+			}
+		}else{
+			masiveGotoxy(0,20);
+			cout << "| Se ha finalizado la eliminacion masiva con errores, por favor escriba 'aceptar' y contacte al administrador         |" << endl;			
+			masiveGotoxy(0,22);
+			cout << "| Su opcion:                                                                                                          |" << endl;	
+			masiveGotoxy(0,23);
+			cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;		
+			
+			masiveGotoxy(13,22);
+			getline(cin, opt2);
+			
+			std::for_each(opt2.begin(), opt2.end(), [](char & c){
+		    c = ::tolower(c);
+			});
+			
+			if(opt2 == "aceptar"){
+				displayModule();	
+			}else{
+				displayModule();	
+			}
+		}	
+	}else{
+		displayModule();	
 	}
 }

@@ -10,6 +10,7 @@ class MasiveModule
 	private:
 		void masiveUpload(int);
 		void masiveDownload(int);
+		void masiveDelete();
 };
 
 #endif

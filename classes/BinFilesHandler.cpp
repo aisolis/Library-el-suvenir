@@ -40,6 +40,25 @@ BinFilesHandler::BinFilesHandler(){
 }
 
 
+int BinFilesHandler::verifyHash (string str) {
+    int h = 0;
+    for (size_t i = 0; i < str.size(); ++i)
+        h = h * 31 + static_cast<int>(str[i]);
+        
+    if(h > 0){
+    	h = h/100000;
+	}else{
+		h = h*-1;
+		h = h/100000;
+	}
+    return h;
+}
+
+
+/*****************************************************/
+//            Users
+/*****************************************************/
+
 User BinFilesHandler::searchUser(User user){
 		
 	User ret;
@@ -60,6 +79,19 @@ User BinFilesHandler::searchUser(User user){
 	return ret;
 }
 
+void BinFilesHandler::cleanFile(){
+	try{
+	   fstream fh("libraryFiles\\inventory.bin", ios::out);
+	   vector<Book> offset = readALLInventory();
+	   if(fh.is_open()){
+	   		for(int y = 0; y < offset.size()+1; y++){
+	   			fh.seekg((y)*sizeof(User));
+	   			fh <<"";
+	   		}
+	   }	fh.close();
+	}catch(bool ex){
+	}
+}
 
 bool BinFilesHandler::writeUserFile(User user){
 	
@@ -79,56 +111,6 @@ bool BinFilesHandler::writeUserFile(User user){
 	
 }
 
-int BinFilesHandler::verifyHash (string str) {
-    int h = 0;
-    for (size_t i = 0; i < str.size(); ++i)
-        h = h * 31 + static_cast<int>(str[i]);
-        
-    if(h > 0){
-    	h = h/100000;
-	}else{
-		h = h*-1;
-		h = h/100000;
-	}
-    return h;
-}
-
-
-bool BinFilesHandler::writeOnInventory(Book book){
-	book.setHashCode(verifyHash(book.getBookTitle()));
-	book.setIsBorrowed(false);
-	book.setBorrowedDate("sin prestar");
-
-	try{
-		ofstream fh("libraryFiles\\inventory.bin", ios::app);
-		if(fh.is_open()){
-			fh << "" << book.getBookTitle() << "," <<  book.getAutor() << "," << book.getCategory() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," << book.getPrice() << "," <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << endl;
-			fh.close();
-			return true;
-		}else{
-			throw (999);
-		}	
-
-	}catch(bool ex){
-		return false;
-	}
-
-	return true;
-}
-
-void BinFilesHandler::cleanFile(){
-	try{
-	   fstream fh("libraryFiles\\inventory.bin", ios::out);
-	   vector<Book> offset = readALLInventory();
-	   if(fh.is_open()){
-	   		for(int y = 0; y < offset.size()+1; y++){
-	   			fh.seekg((y)*sizeof(User));
-	   			fh <<"";
-	   		}
-	   }	fh.close();
-	}catch(bool ex){
-	}
-}
 
 bool BinFilesHandler::editOnUser(vector<User> users){
 	try{
@@ -163,27 +145,6 @@ void BinFilesHandler::cleanUserFile(){
 	   }	fh.close();
 	}catch(bool ex){
 	}
-}
-
-bool BinFilesHandler::editOnInventory(vector<Book> books){
-	try{
-		ofstream fh("libraryFiles\\inventory.bin", ios::app);
-		cleanFile();
-		if(fh.is_open()){
-			for(int z = 0; z < books.size();z++){	
-				fh << books[z].getBookTitle() << "," <<  books[z].getAutor() << "," << books[z].getCategory() << "," <<  books[z].getLinealDescription() << "," <<  books[z].getEditorial() << "," <<  books[z].getPublicationYear() << "," <<  books[z].getPagesNumbers() << "," << books[z].getPrice() << "," << books[z].getStock() << "," <<  books[z].getHashCode() << "," <<  books[z].getIsBorrowed() << "," <<  books[z].getBorrowedDate() << std::endl;
-			}			
-			fh.close();
-			return true;
-		}else{
-			throw (999);
-		}	
-
-	}catch(bool ex){
-		return false;
-	}
-
-	return true;
 }
 
 vector<User> BinFilesHandler::readAllUsers(){
@@ -240,6 +201,54 @@ vector<User> BinFilesHandler::readAllUsers(){
 		return users;
 	}
 }
+
+/*****************************************************/
+//            Inventory
+/*****************************************************/
+
+bool BinFilesHandler::writeOnInventory(Book book){
+	book.setHashCode(verifyHash(book.getBookTitle()));
+	book.setIsBorrowed(false);
+	book.setBorrowedDate("sin prestar");
+
+	try{
+		ofstream fh("libraryFiles\\inventory.bin", ios::app);
+		if(fh.is_open()){
+			fh << "" << book.getBookTitle() << "," <<  book.getAutor() << "," << book.getCategory() << "," <<  book.getLinealDescription() << "," <<  book.getEditorial() << "," <<  book.getPublicationYear() << "," <<  book.getPagesNumbers() << "," << book.getPrice() << "," <<  book.getStock() << "," <<  book.getHashCode() << "," <<  book.getIsBorrowed() << "," <<  book.getBorrowedDate() << endl;
+			fh.close();
+			return true;
+		}else{
+			throw (999);
+		}	
+
+	}catch(bool ex){
+		return false;
+	}
+
+	return true;
+}
+
+bool BinFilesHandler::editOnInventory(vector<Book> books){
+	try{
+		ofstream fh("libraryFiles\\inventory.bin", ios::app);
+		cleanFile();
+		if(fh.is_open()){
+			for(int z = 0; z < books.size();z++){	
+				fh << books[z].getBookTitle() << "," <<  books[z].getAutor() << "," << books[z].getCategory() << "," <<  books[z].getLinealDescription() << "," <<  books[z].getEditorial() << "," <<  books[z].getPublicationYear() << "," <<  books[z].getPagesNumbers() << "," << books[z].getPrice() << "," << books[z].getStock() << "," <<  books[z].getHashCode() << "," <<  books[z].getIsBorrowed() << "," <<  books[z].getBorrowedDate() << std::endl;
+			}			
+			fh.close();
+			return true;
+		}else{
+			throw (999);
+		}	
+
+	}catch(bool ex){
+		return false;
+	}
+
+	return true;
+}
+
 
 vector<Book> BinFilesHandler::readALLInventory(){
 	vector<Book> books;
@@ -333,7 +342,12 @@ vector<Book> BinFilesHandler::readALLInventory(){
 					}
 				}
 			}
-			books.push_back(book);
+			if(book.getStock() > 0){
+				books.push_back(book);	
+			}else{
+				continue;
+			}
+			
 		}
 		
 		return books;
@@ -342,6 +356,10 @@ vector<Book> BinFilesHandler::readALLInventory(){
 	}
 }
 
+
+/*****************************************************/
+//            Masive
+/*****************************************************/
 
 vector<Book> BinFilesHandler::readMasiveBulkCsv(){
 	vector<Book> books;
@@ -473,6 +491,7 @@ vector<Book> BinFilesHandler::readMasiveBulkCsv(){
 	}
 }
 
+
 bool BinFilesHandler::masiveBulk(){
 	vector<Book> newAux = readMasiveBulkCsv();
 	if(newAux.size() == 0){
@@ -529,6 +548,9 @@ bool BinFilesHandler::downloadInventory(){
 	return true;
 }
 
+/*****************************************************/
+//            Sellings
+/*****************************************************/
 
 
 
