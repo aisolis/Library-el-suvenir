@@ -2,6 +2,7 @@
 #include "subModules/inventoryModule/InventoryModule.h"
 #include "subModules/usersModule/UserModule.h"
 #include "subModules/masiveModule/MasiveModule.h"
+#include "subModules/reportsModule/ReportsModule.h"
 
 #include <iostream>
 #include <sstream>
@@ -69,6 +70,8 @@ void AdminPanel::displayPanelAdmin(){
 		}
 		
 		case 3:{
+			ReportsModule rp = ReportsModule();
+			rp.displayModule();
 			break;
 		}
 		

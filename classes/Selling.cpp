@@ -67,6 +67,10 @@ void Selling::setTransaction(string t){
 	}
 }
 
+void Selling::setRTransaction(string t){
+		Selling::transaction = t;
+}
+
 string Selling::getTransaction(){
 	return Selling::transaction;
 }

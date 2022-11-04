@@ -29,6 +29,7 @@ class Selling
 		string getNit();
 		
 		void setTransaction(string);
+		void setRTransaction(string);
 		string getTransaction();
 		
 		void setCantidad(int);

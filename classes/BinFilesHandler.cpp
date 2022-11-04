@@ -614,7 +614,7 @@ vector<Selling> BinFilesHandler::listAllSellings(){
 						break;
 					}
 					case 5:{
-						selling.setTransaction(word);
+						selling.setRTransaction(word);
 						break;
 					}
 					case 6:{
@@ -691,6 +691,9 @@ void BinFilesHandler::generateInventoryReportByAutorAndBookTitle(){
 			fh << "<tr><th>" << "TOTAL DE LIBROS EN EL SISTEMA: " << "</td><th>" <<  books.size() << "</th></tr>" << std::endl;		
 			fh << "</table></body></html>" << endl;
 			fh.close();
+			
+			string commandOpenfile = "start Reports\\" + fileName;
+			system(commandOpenfile.c_str());		
 		}else{
 			throw (999);
 		}	
@@ -729,6 +732,9 @@ void BinFilesHandler::generateInventoryReportByBookTitleSorted(){
 			fh << "<tr><th>" << "TOTAL DE LIBROS EN EL SISTEMA: " << "</td><th>" <<  books.size() << "</th></tr>" << std::endl;		
 			fh << "</table></body></html>" << endl;
 			fh.close();
+			
+			string commandOpenfile = "start Reports\\" + fileName;
+			system(commandOpenfile.c_str());		
 		}else{
 			throw (999);
 		}	
@@ -768,6 +774,9 @@ void BinFilesHandler::generateInventoryReportByPrice(){
 			fh << "<tr><th>" << "TOTAL DE LIBROS EN EL SISTEMA: " << "</td><th>" <<  books.size() << "</th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th></tr>" << std::endl;		
 			fh << "</table></body></html>" << endl;
 			fh.close();
+			
+			string commandOpenfile = "start Reports\\" + fileName;
+			system(commandOpenfile.c_str());	
 		}else{
 			throw (999);
 		}	
@@ -804,6 +813,9 @@ void BinFilesHandler::generateInventoryReportBySellings(){
 			fh << "<tr><th>" << "TOTAL DE VENTAS/ALQUILERES EN EL SISTEMA: " << "</td><th>" <<  sellings.size() << "</th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> </tr>" << std::endl;		
 			fh << "</table></body></html>" << endl;
 			fh.close();
+			
+			string commandOpenfile = "start Reports\\" + fileName;
+			system(commandOpenfile.c_str());	
 		}else{
 			throw (999);
 		}	

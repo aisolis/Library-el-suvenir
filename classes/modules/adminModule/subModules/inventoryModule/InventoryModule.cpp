@@ -15,7 +15,13 @@
 #include <windows.h>
 #include <vector>
 #include <algorithm>
+#include <ctime>
 
+time_t now1 = time(0);
+tm * time1 = localtime(&now1);
+int year = 1900 + time1->tm_year;
+
+string date = std::to_string(time1->tm_mday) + "-" + std::to_string(time1->tm_mon) + "-" + std::to_string(year);
 
 const std::string WHITESPACE = " \n\r\t\f\v";
  
@@ -1599,7 +1605,7 @@ void InventoryModule::displayBorrowScreen(vector<Book> books, int index, int rol
 			char transaction;
 			string cantidad;
 			string fechaDevolucion;
-			string fechaPrestamo;
+			string fechaPrestamo = date;
 			string correo;
 
 			char option;
@@ -1645,7 +1651,7 @@ void InventoryModule::displayBorrowScreen(vector<Book> books, int index, int rol
 				cout << "Es venta" << endl;
 
 				invGotoxy(30,21);
-				cout << "hoy" << endl;
+				cout << date << endl;
 
 				invGotoxy(23,22);
 				getline(cin, correo);
@@ -1663,7 +1669,7 @@ void InventoryModule::displayBorrowScreen(vector<Book> books, int index, int rol
 				getline(cin, fechaDevolucion);
 
 				invGotoxy(30,21);
-				cout << "hoy" << endl;
+				cout << date << endl;
 
 				invGotoxy(23,22);
 				cout << "No aplica debido a prestamo" << endl;
