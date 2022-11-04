@@ -1576,14 +1576,8 @@ void InventoryModule::displayBorrowScreen(vector<Book> books, int index){
 		getline(cin, nit);
 
 	invalid:
-		cin.ignore();
-
 		invGotoxy(46,13);
 		getline(cin, transaction);
-
-		std::for_each(transaction.begin(), transaction.end(), [](char & c){
-	    	c = ::tolower(c);
-		});
 
 		if(transaction != "v" || transaction != "a"){
 			goto invalid;
