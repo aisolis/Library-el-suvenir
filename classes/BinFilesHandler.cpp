@@ -386,7 +386,7 @@ vector<Book> BinFilesHandler::readMasiveBulkCsv(){
 			
 			Book book = Book();
 			Book bookAux;
-			if(w-1<aux.size()){
+			if(w-1 < aux.size()){
 				bookAux = aux[z];
 			}
 			z++;
@@ -477,11 +477,14 @@ vector<Book> BinFilesHandler::readMasiveBulkCsv(){
 		
 		for(int x = 0; x < books.size(); x++){			
 			Book tmp = books[x];
-			Book tmp2 = aux[x];
-			if(tmp.getBookTitle() == tmp2.getBookTitle()){
+			Book tmp2;
+			if(x < aux.size()){
+				tmp2 = aux[x];	
+				if(tmp.getBookTitle() == tmp2.getBookTitle()){
 				continue;
-			}else{
-				books.push_back(aux[x]);	
+				}else{
+					books.push_back(aux[x]);	
+				}
 			}
 		}
 		
@@ -510,13 +513,16 @@ std::string get_working_path()
    return ( getcwd(temp, sizeof(temp)) ? std::string( temp ) : std::string("") );
 }
 
+
+
+
 void BinFilesHandler::copytemplate(){
 	try{
 		string archivo = "libraryFiles\\masiveBulk\\template.csv";
 		ifstream infile(archivo.c_str());
 				
 		if(infile.good()){
-			system("DEL /F /A libraryFiles\\masiveBulk\\template.csv");
+			//system("DEL /F /A libraryFiles\\masiveBulk\\template.csv");
 		}
 		system("cd..");
 		system("copy template\\template.csv libraryFiles\\masiveBulk\\");	

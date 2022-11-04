@@ -1241,7 +1241,7 @@ void InventoryModule::editEntry(vector<Book> books, int index, bool isABorrow, i
 					"| Precio de venta/alquiler:                                              | PREV:                           | STATUS:                    |\n"
 					"| Cantidad de existencias en stock:                                      | PREV:                           | STATUS:                    |\n"
 					"+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
-					"| Confirmar este libro para alquilar/vender S/N:                         |                                 | FORMULARIO:                |\n"
+					"| Confirmar edicion S/N:                                                 |                                 | FORMULARIO:                |\n"
 					"+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"<< endl;
 				
 			invGotoxy(81,5);
@@ -1277,7 +1277,7 @@ void InventoryModule::editEntry(vector<Book> books, int index, bool isABorrow, i
 			invGotoxy(81,14);
 			cout << preview.getPagesNumbers()<<endl;  
 			
-			invGotoxy(86,15);
+			invGotoxy(81,15);
 			cout << preview.getPrice()<<endl;  
 			
 			invGotoxy(81,16);
@@ -1323,7 +1323,7 @@ void InventoryModule::editEntry(vector<Book> books, int index, bool isABorrow, i
 				invGotoxy(49,18);
 				cin >> option;
 			}else{
-				invGotoxy(30,18);
+				invGotoxy(25,18);
 				cin >> option;
 			}
 		
