@@ -68,7 +68,21 @@ User BinFilesHandler::searchUser(User user){
 		
 		for(int x = 0; x < users.size(); x++){
 			User aux = users[x];
-			if(aux.getUser() == user.getUser()){
+			
+			string userCompareOne = aux.getUser();
+			
+			string userCompare =  user.getUser();
+			
+			std::for_each(userCompare.begin(), userCompare.end(), [](char & c){
+		    	c = ::tolower(c);
+			});
+			
+			std::for_each(userCompareOne.begin(), userCompareOne.end(), [](char & c){
+		    	c = ::tolower(c);
+			});
+			
+			
+			if(userCompareOne == userCompare){
 				ret = aux;
 				break;
 			}else{

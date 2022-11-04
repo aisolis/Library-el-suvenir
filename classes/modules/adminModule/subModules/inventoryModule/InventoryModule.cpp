@@ -1116,7 +1116,15 @@ void InventoryModule::editEntryOfInventory(int rol){
 		
 		
 		for(int y = 0; y < books.size();y++){
-			if(opt == books[y].getBookTitle()){
+			
+			string bookCompare = books[y].getBookTitle();
+			
+			std::for_each(bookCompare.begin(), bookCompare.end(), [](char & c){
+		    	c = ::tolower(c);
+			});
+		
+			
+			if(opt == bookCompare){
 				editEntry(books, y, false, rol);
 			}
 		}	
@@ -1436,7 +1444,13 @@ void InventoryModule::deleteEntryOfInventory(){
 		
 		for(int y = 0; y < books.size();y++){
 			
-			if(opt == books[y].getBookTitle()){
+			string bookCompare = books[y].getBookTitle();
+			
+			std::for_each(bookCompare.begin(), bookCompare.end(), [](char & c){
+		    	c = ::tolower(c);
+			});
+			
+			if(opt == bookCompare){
 				vector<Book> aux = books;
 				aux.erase(aux.begin()+y);
 				
@@ -1556,7 +1570,13 @@ void InventoryModule::borrowABook(int rol){
 		
 		for(int y = 0; y < books.size();y++){
 			
-			if(opt == books[y].getBookTitle()){
+			string bookCompare = books[y].getBookTitle();
+			
+			std::for_each(bookCompare.begin(), bookCompare.end(), [](char & c){
+		    	c = ::tolower(c);
+			});
+			
+			if(opt == bookCompare){
 					editEntry(books, y, true, rol);
 			}else{
 				continue;

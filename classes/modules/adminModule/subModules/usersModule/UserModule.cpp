@@ -554,7 +554,14 @@ void UserModule::updateUsers(){
 		
 		
 		for(int y = 0; y < users.size();y++){
-			if(opt == users[y].getUser()){
+			
+			string userCompare = users[y].getUser();
+			
+			std::for_each(userCompare.begin(), userCompare.end(), [](char & c){
+		    	c = ::tolower(c);
+			});
+			
+			if(opt == userCompare){
 				editEntry(users, y);
 			}else{
 				continue;
@@ -590,10 +597,10 @@ void UserModule::editEntry(vector<User> users, int index){
 			"|                                                                        |                            |\n"
 			"|                               Roles disponibles                        |                            |\n"
 			"|                                                                        |                            |\n"
-			"|             0) Operador     1) supervisor   2) Administrador           |                            |\n"
+			"|             1) Operador     2) supervisor   3) Administrador           |                            |\n"
 			"|                                                                        |                            |\n"
 			"| Nombre de usuario:                                                     | STATUS:                    |\n"
-			"| Contraseña:                                                            | STATUS:                    |\n"
+			"| Contrasenia:                                                           | STATUS:                    |\n"
 			"| Rol:                                                                   | STATUS:                    |\n"
 			"|                                                                        |                            |\n"
 			"+------------------------------------------------------------------------+----------------------------+\n"
@@ -607,7 +614,7 @@ void UserModule::editEntry(vector<User> users, int index){
 	userGotoxy(21,14);
 	cout << preview.getUser()<<endl;
 	
-	userGotoxy(14,15);
+	userGotoxy(15,15);
 	cout << "************" <<endl;
 	
 	userGotoxy(7,16);
@@ -633,7 +640,7 @@ void UserModule::editEntry(vector<User> users, int index){
 				"|             1) Operador     2) supervisor   3) Administrador           |                                 |                            |\n"
 				"|                                                                        |                                 |                            |\n"
 				"| Nombre de usuario:                                                     | PREV:                           | STATUS: NO MODIFICABLE     |\n"
-				"| Contraseña:                                                            | PREV:                           | STATUS:                    |\n"
+				"| Contrasenia:                                                           | PREV:                           | STATUS:                    |\n"
 				"| Rol:                                                                   | PREV:                           | STATUS:                    |\n"
 				"|                                                                        |                                 |                            |\n"
 				"+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
@@ -655,7 +662,7 @@ void UserModule::editEntry(vector<User> users, int index){
 		userGotoxy(81,16);
 		cout << preview.getRol() <<endl;
 		
-		userGotoxy(14,15);
+		userGotoxy(16,15);
 		getline(cin, pwd);
 		
 		userGotoxy(7,16);
@@ -843,7 +850,15 @@ restart:
 		});
 		
 		for(int x = 0; x < users.size(); x++){
-			if(opt == users[x].getUser()){
+			
+			string userCompare = users[x].getUser();
+			
+			std::for_each(userCompare.begin(), userCompare.end(), [](char & c){
+		    	c = ::tolower(c);
+			});
+			
+			
+			if(opt == userCompare){
 				vector<User> aux = users;
 				aux.erase(aux.begin()+x);
 				
