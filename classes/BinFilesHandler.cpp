@@ -494,14 +494,13 @@ void BinFilesHandler::copytemplate(){
 		string archivo = "libraryFiles\\masiveBulk\\template.csv";
 		ifstream infile(archivo.c_str());
 				
-		if(!infile.good()){
-			system("cd ..");
-			system("copy template\\template.csv libraryFiles\\masiveBulk\\");	
-			system("start libraryFiles\\masiveBulk");	
-		}else{
-			system("cd..");
-			system("start libraryFiles\\masiveBulk");		
+		if(infile.good()){
+			system("DEL /F /A libraryFiles\\masiveBulk\\template.csv");
 		}
+		system("cd..");
+		system("copy template\\template.csv libraryFiles\\masiveBulk\\");	
+		system("start libraryFiles\\masiveBulk");	
+		
 		
 	}catch(int x){
 	}
@@ -509,9 +508,21 @@ void BinFilesHandler::copytemplate(){
 
 
 bool BinFilesHandler::downloadInventory(){
-	system("cd..");
-	system("copy libraryFiles\\inventory.bin Downloads\\backups\\");
-	system("start Downloads\\backups");	
+	try{
+		string archivo = "libraryFiles\\masiveBulk\\template.csv";
+		ifstream infile(archivo.c_str());
+		
+		if(infile.good()){
+			system("DEL /F /A Downloads\\backups\\inventory.bin");
+		}
+		
+		system("cd..");
+		system("copy libraryFiles\\inventory.bin Downloads\\backups\\");
+		system("start Downloads\\backups");	
+		
+	}catch(int x){
+		
+	}
 	
 	return true;
 }
