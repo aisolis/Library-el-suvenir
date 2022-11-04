@@ -55,7 +55,7 @@ void UserModule::displayModuleSupervisor(){
 		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 		cout << "|                                                MODULO DE USUARIOS                                                   |" << endl;
 		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
-		cout << "| Bienvenido nuevamente estimado Administrador                                                                        |" << endl;
+		cout << "| Bienvenido nuevamente estimado Supervisor                                                                           |" << endl;
 		cout << "| Por favor elija una opcion del siguiente menu:                                                                      |" << endl;
 		cout << "|                                                                                                                     |" << endl;
 		cout << "| 1) Listar todos los usuarios                                                                                        |" << endl;
@@ -80,7 +80,7 @@ void UserModule::displayModuleSupervisor(){
 		
 		switch(optionMenu){
 			case 1:{
-				displayUsers();
+				displayUsers(2);
 				break;
 			}
 
@@ -150,7 +150,7 @@ void UserModule::displayModule(){
 			}
 			
 			case 4:{
-				displayUsers();
+				displayUsers(3);
 				break;
 			}
 			
@@ -680,7 +680,7 @@ void UserModule::editEntry(vector<User> users, int index){
 
 
 
-void UserModule::displayUsers(){
+void UserModule::displayUsers(int rol){
 	system("CLS");
 		BinFilesHandler bfh = BinFilesHandler();
 	
@@ -753,8 +753,17 @@ void UserModule::displayUsers(){
 		userGotoxy(13,firstLine+2);
 		cin >> opt;	
 	}
+	switch(rol){
+		case 2:{
+			displayModuleSupervisor();
+			break;
+		}
+		case 3:{
+			displayModule();	
+			break;
+		}
+	}
 	
-	displayModule();
 }
 
 void UserModule::deleteUsers(){

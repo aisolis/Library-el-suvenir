@@ -1,5 +1,6 @@
 #include "InventoryModule.h"
 #include "../../../../Book.h"
+#include "../../../../Selling.h"
 #include "../../../../BinFilesHandler.h"
 #include "../../AdminPanel.h"
 #include "../../../SuperModule/SupervisorPanel.h"
@@ -91,7 +92,7 @@ void InventoryModule::displayInventoryModuleOperator(){
 		AdminPanel ap = AdminPanel();
 		switch(optionMenu){
 			case 1:{
-					displayAllEntrys();
+					displayAllEntrys(1);
 				break;
 			}
 
@@ -145,12 +146,12 @@ void InventoryModule::displayInventoryModuleSupervisor(){
 		AdminPanel ap = AdminPanel();
 		switch(optionMenu){
 			case 1:{
-					addEntryToInventory();
+					addEntryToInventory(2);
 				break;
 			}
 
 			case 2:{
-					displayAllEntrys();
+					displayAllEntrys(2);
 				break;
 			}
 			
@@ -205,17 +206,17 @@ void InventoryModule::displayModule(){
 		AdminPanel ap = AdminPanel();
 		switch(optionMenu){
 			case 1:{
-					addEntryToInventory();
+					addEntryToInventory(3);
 				break;
 			}
 
 			case 2:{
-					displayAllEntrys();
+					displayAllEntrys(3);
 				break;
 			}
 			
 			case 3:{
-					editEntryOfInventory();
+					editEntryOfInventory(3);
 				break;
 			}
 			
@@ -238,7 +239,7 @@ void InventoryModule::displayModule(){
 	invGotoxy(0,30);
 }
 
-void InventoryModule::addEntryToInventory(){
+void InventoryModule::addEntryToInventory(int rol){
 	
 	
 	vector<string> descVector;
@@ -319,15 +320,29 @@ void InventoryModule::addEntryToInventory(){
 
 	if(tolower(option) == 's'){
 		invGotoxy(0,18);
-		InventoryModule::validateForm(title, autor, category, descVector, editorial, anio, pages, price, stock, false);
+		InventoryModule::validateForm(title, autor, category, descVector, editorial, anio, pages, price, stock, false, rol);
 	}else{
-		displayModule();	
+		switch(rol){
+			case 1:{
+				displayInventoryModuleOperator();
+				break;
+			}
+			case 2:{
+				displayInventoryModuleSupervisor();
+				break;
+			}
+			case 3:{
+				displayModule();	
+				break;
+			}
+		}
+		
 	}
 	
 	
 }
 
-void InventoryModule::validateForm(string title, string autor, string category, vector<string> desc, string editorial, string anio, string pages, string price, string stock, bool isEdit){
+void InventoryModule::validateForm(string title, string autor, string category, vector<string> desc, string editorial, string anio, string pages, string price, string stock, bool isEdit, int rol){
 	Book book = Book();
 
 	int errorCount;
@@ -654,9 +669,9 @@ void InventoryModule::validateForm(string title, string autor, string category, 
 		}
 	 
 	 	if(isEdit){
-	 		fixFormData(b1,b2,b3,b4,b5,b6,b7,b8,b9, title, autor, category, desc, editorial, anio, pages, price, stock, true);	
+	 		fixFormData(b1,b2,b3,b4,b5,b6,b7,b8,b9, title, autor, category, desc, editorial, anio, pages, price, stock, true, rol);	
 		}else{
-			fixFormData(b1,b2,b3,b4,b5,b6,b7,b8,b9, title, autor, category, desc, editorial, anio, pages, price, stock, false);
+			fixFormData(b1,b2,b3,b4,b5,b6,b7,b8,b9, title, autor, category, desc, editorial, anio, pages, price, stock, false, rol);
 		}
 		
 
@@ -695,7 +710,7 @@ void InventoryModule::validateForm(string title, string autor, string category, 
 				}
 			}
 			invGotoxy(0,0);
-			InventoryModule::editEntryOfInventory();	
+			InventoryModule::editEntryOfInventory(rol);	
 		}else{
 
 			char opt2;
@@ -705,7 +720,7 @@ void InventoryModule::validateForm(string title, string autor, string category, 
 			for(int x = 0; x < booksTovalidate.size(); x++){
 				Book aux = booksTovalidate[x];
 				if(book.getBookTitle() == aux.getBookTitle()){
-					throwAlert(booksTovalidate, x);
+					throwAlert(booksTovalidate, x, rol);
 				}
 			}
 	
@@ -718,9 +733,22 @@ void InventoryModule::validateForm(string title, string autor, string category, 
 	
 				if(toupper(opt2) == 'S' || tolower(opt2) == 's'){
 					invGotoxy(0,0);
-					InventoryModule::addEntryToInventory();	
+					InventoryModule::addEntryToInventory(rol);	
 				}else{
-					displayModule();
+					switch(rol){
+						case 1:{
+							displayInventoryModuleOperator();
+							break;
+						}
+						case 2:{
+							displayInventoryModuleSupervisor();
+							break;
+						}
+						case 3:{
+							displayModule();	
+							break;
+						}
+					}
 				}
 			}		
 		}
@@ -730,7 +758,7 @@ void InventoryModule::validateForm(string title, string autor, string category, 
 	
 }
 
-void InventoryModule::throwAlert(vector<Book> books, int index){
+void InventoryModule::throwAlert(vector<Book> books, int index, int rol){
 	system("CLS");
 	invGotoxy(0,0);
 	cout << "+---------------------------------------------------------------------------------------------------------------------------+" << endl;
@@ -777,11 +805,11 @@ void InventoryModule::throwAlert(vector<Book> books, int index){
 		cin >> opt;
 	}while(tolower(opt) != 's');
 	
-	editEntry(books, index, false);
+	editEntry(books, index, false, rol);
 	
 }
 
-void InventoryModule::fixFormData(bool title, bool autor, bool category, bool desc, bool editorial, bool anio, bool pages, bool price, bool stock, string a, string b,string c, vector<string> d, string e, string f, string g, string h, string i, bool editMode){
+void InventoryModule::fixFormData(bool title, bool autor, bool category, bool desc, bool editorial, bool anio, bool pages, bool price, bool stock, string a, string b,string c, vector<string> d, string e, string f, string g, string h, string i, bool editMode, int rol){
 	vector<string> descVector;
 	string titleFix;
 	string autorFix;
@@ -875,19 +903,19 @@ void InventoryModule::fixFormData(bool title, bool autor, bool category, bool de
 	if(editMode){
 		if(toupper(optionFix) == 'S' || tolower(optionFix) == 's'){
 			invGotoxy(0,20);
-			InventoryModule::validateForm(titleFix, autorFix, categoryFix, descVector, editorialFix, anioFix, pagesFix, priceFix, stockFix, true);
+			InventoryModule::validateForm(titleFix, autorFix, categoryFix, descVector, editorialFix, anioFix, pagesFix, priceFix, stockFix, true, rol);
 		}		
 	}else{
 		if(toupper(optionFix) == 'S' || tolower(optionFix) == 's'){
 			invGotoxy(0,18);
-			InventoryModule::validateForm(titleFix, autorFix, categoryFix, descVector, editorialFix, anioFix, pagesFix, priceFix, stockFix, false);
+			InventoryModule::validateForm(titleFix, autorFix, categoryFix, descVector, editorialFix, anioFix, pagesFix, priceFix, stockFix, false, rol);
 		}	
 	}
 	
 
 }
 
-void InventoryModule::displayAllEntrys(){
+void InventoryModule::displayAllEntrys(int rol){
 		system("CLS");
 		BinFilesHandler bfh = BinFilesHandler();
 	
@@ -972,12 +1000,28 @@ void InventoryModule::displayAllEntrys(){
 		cin >> opt;	
 	}
 	
-	displayModule();
+	switch(rol){
+		case 1:{
+			displayInventoryModuleOperator();
+			break;
+		}
+
+		case 2:{
+			displayInventoryModuleSupervisor();
+			break;
+		}
+
+		case 3:{
+			displayModule();
+			break;
+		}
+	}
+	
 	
 }
 
 
-void InventoryModule::editEntryOfInventory(){
+void InventoryModule::editEntryOfInventory(int rol){
 	
 	system("CLS");
 		BinFilesHandler bfh = BinFilesHandler();
@@ -991,8 +1035,8 @@ void InventoryModule::editEntryOfInventory(){
 		cout << "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
 		cout << "|                                                               EDITAR REGISTRO DEL LISTADO DE REGISTROS BIBLIOTECA                                                          |" << endl;
 		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
-		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial     | A�o de Publicacion | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
-		cout << "+----------------------------+-----------------+------------------+-------------------+--------------------+-------------------+-------------------------+-------------------+" << endl;
+		cout << "|           Titulo           |      Autor      |    Categorias    |     Editorial    | Anio de Publicacion | Numero de Paginas | Precio venta o Alquiler | Cantidad en Stock |" << endl;
+		cout << "+----------------------------+-----------------+------------------+------------------+---------------------+-------------------+-------------------------+-------------------+" << endl;
 		
 		int firstLine = 7;
 		int modifier = 2;
@@ -1067,14 +1111,14 @@ void InventoryModule::editEntryOfInventory(){
 		
 		for(int y = 0; y < books.size();y++){
 			if(opt == books[y].getBookTitle()){
-				editEntry(books, y, false);
+				editEntry(books, y, false, rol);
 			}
 		}	
 		
 		displayModule();
 }
 
-void InventoryModule::editEntry(vector<Book> books, int index, bool isABorrow){
+void InventoryModule::editEntry(vector<Book> books, int index, bool isABorrow, int rol){
 	
 	
 	vector<string> descVector;
@@ -1154,7 +1198,7 @@ void InventoryModule::editEntry(vector<Book> books, int index, bool isABorrow){
 	invGotoxy(21,14);
 	cout << preview.getPagesNumbers()<<endl;  
 	
-	invGotoxy(23,15);
+	invGotoxy(28,15);
 	cout << preview.getPrice()<<endl;  
 	
 	invGotoxy(36,16);
@@ -1170,7 +1214,7 @@ void InventoryModule::editEntry(vector<Book> books, int index, bool isABorrow){
 
 	if(toupper(option) == 'S' || tolower(option) == 's'){
 		if(isABorrow){
-			displayBorrowScreen(books, index);
+			displayBorrowScreen(books, index, rol);
 		}else{
 			system("CLS");
 			cout << "+------------------------------------------------------------------------+---------------------------------+----------------------------+\n"
@@ -1227,7 +1271,7 @@ void InventoryModule::editEntry(vector<Book> books, int index, bool isABorrow){
 			invGotoxy(81,14);
 			cout << preview.getPagesNumbers()<<endl;  
 			
-			invGotoxy(81,15);
+			invGotoxy(86,15);
 			cout << preview.getPrice()<<endl;  
 			
 			invGotoxy(81,16);
@@ -1277,17 +1321,21 @@ void InventoryModule::editEntry(vector<Book> books, int index, bool isABorrow){
 				cin >> option;
 			}
 		
-			if(toupper(option) == 'S' || tolower(option) == 's'){
+			if(toupper(option) == 'S'){
 				InventoryModule::editingVector = books;
 				indexvector = index;
-				InventoryModule::validateForm(title, autor, category, descVector, editorial, anio, pages, price, stock, true);
+				InventoryModule::validateForm(title, autor, category, descVector, editorial, anio, pages, price, stock, true, rol);
 			}else{
-				editEntryOfInventory();	
+				editEntryOfInventory(rol);	
 			}
 		}
 		
 	}else{
-		editEntryOfInventory();
+		if(isABorrow){
+			borrowABook(rol);
+		}else{
+			editEntryOfInventory(rol);	
+		}
 	}
 	
 	
@@ -1414,7 +1462,7 @@ void InventoryModule::deleteEntryOfInventory(){
 		
 }
 
-void InventoryModule::borrowABook(){
+void InventoryModule::borrowABook(int rol){
 	system("CLS");
 		BinFilesHandler bfh = BinFilesHandler();
 	
@@ -1503,7 +1551,7 @@ void InventoryModule::borrowABook(){
 		for(int y = 0; y < books.size();y++){
 			
 			if(opt == books[y].getBookTitle()){
-					editEntry(books, y, true);
+					editEntry(books, y, true, rol);
 			}else{
 				continue;
 			}
@@ -1512,41 +1560,43 @@ void InventoryModule::borrowABook(){
 
 }
 
-void InventoryModule::displayBorrowScreen(vector<Book> books, int index){
+void InventoryModule::displayBorrowScreen(vector<Book> books, int index, int rol){
 	system("CLS");
-			cout << "+---------------------------------------------------------------------------------+" << endl;
-			cout << "|                              BIBLIOTECA EL PORVENIR                             |" << endl;
-			cout << "+---------------------------------------------------------------------------------+" << endl;
-			cout << "|                    ALQUILER Y VENTA DE LIBROS DE LA BIBLIOTECA                  |" << endl;
-			cout << "+---------------------------------------------------------------------------------+" << endl;
-			cout << "|                                                                                 |" << endl;
-			cout << "| Rellene los datos solicitados, tomar en cuenta que por prestamos el importe     |" << endl;
-			cout << "| total es Q.0.00, el precio solo sera tomado para ventas.                        |" << endl;
-			cout << "|                                                                                 |" << endl;
-			cout << "| Nombre del cliente:                                                             |" << endl;
-			cout << "| Direccion del cliente:                                                          |" << endl;
-			cout << "| Telefono del cliente:                                                           |" << endl;
-			cout << "| NIT del cliente:                                                                |" << endl;
-			cout << "| Escriba [v] para venta o [a] para alquiler:                                     |" << endl;
-			cout << "| Libro Solicitado:                                                               |" << endl;
-			cout << "| Precio:                                                                         |" << endl;
-			cout << "| Stock disponible:                                                               |" << endl;
-			cout << "| Cantidad solicitada:                                                            |" << endl;
-			cout << "| Fecha de devolucion:                                                            |" << endl;
-			cout << "| Fecha del prestamo / venta:                                                     |" << endl;
-			cout << "| Correo para factura:                                                            |" << endl;
-			cout << "|                                                                                 |" << endl;
-			cout << "+---------------------------------------------------------------------------------+" << endl;
-			cout << "| Sub total:                                            Grand Total:              |" << endl;
-			cout << "+---------------------------------------------------------------------------------+" << endl;
-			cout << "| Informacion correcta? S/N:                                                      |" << endl;
-			cout << "+---------------------------------------------------------------------------------+" << endl;
+			cout << "+---------------------------------------------------------------------------------+------------------------+" << endl;
+			cout << "|                              BIBLIOTECA EL PORVENIR                             |                        |" << endl;
+			cout << "+---------------------------------------------------------------------------------+------------------------+" << endl;
+			cout << "|                    ALQUILER Y VENTA DE LIBROS DE LA BIBLIOTECA                  |     VALIDACIONES       |" << endl;
+			cout << "+---------------------------------------------------------------------------------+------------------------+" << endl;
+			cout << "|                                                                                 |                        |" << endl;
+			cout << "| Rellene los datos solicitados, tomar en cuenta que por prestamos el importe     |                        |" << endl;
+			cout << "| total es Q.0.00, el precio solo sera tomado para ventas.                        |                        |" << endl;
+			cout << "|                                                                                 |                        |" << endl;
+			cout << "| Campos obligatorios marcados con *                                              |                        |" << endl;
+			cout << "|                                                                                 |                        |" << endl;
+			cout << "| Nombre del cliente (*):                                                         |  STATUS:               |" << endl;
+			cout << "| Direccion del cliente:                                                          |                        |" << endl;
+			cout << "| Telefono del cliente:                                                           |                        |" << endl;
+			cout << "| NIT del cliente:                                                                |                        |" << endl;
+			cout << "| Escriba [v] para venta o [a] para alquiler (*):                                 |                        |" << endl;
+			cout << "| Libro Solicitado:                                                               |                        |" << endl;
+			cout << "| Precio:                                                                         |                        |" << endl;
+			cout << "| Stock disponible:                                                               |                        |" << endl;
+			cout << "| Cantidad solicitada (*):                                                        |  STATUS:               |" << endl;
+			cout << "| Fecha de devolucion (si es alquiler):                                           |  STATUS:               |" << endl;
+			cout << "| Fecha del prestamo / venta:                                                     |                        |" << endl;
+			cout << "| Correo para factura:                                                            |                        |" << endl;
+			cout << "|                                                                                 |                        |" << endl;
+			cout << "+---------------------------------------------------------------------------------+------------------------+" << endl;
+			cout << "| Sub total:                                       Grand Total:                   | ESTADO:                |" << endl;
+			cout << "+---------------------------------------------------------------------------------+------------------------+" << endl;
+			cout << "| Informacion correcta? S/N:                                                                               |" << endl;
+			cout << "+---------------------------------------------------------------------------------+------------------------+" << endl;
 
 			string clientName;
 			string clientAddress;
 			string telefono;
 			string nit;
-			string transaction;
+			char transaction;
 			string cantidad;
 			string fechaDevolucion;
 			string fechaPrestamo;
@@ -1557,76 +1607,304 @@ void InventoryModule::displayBorrowScreen(vector<Book> books, int index){
 		Book aux = books[index];
 		cin.ignore();
 
-		invGotoxy(20,14);
+		invGotoxy(20,16);
 		cout << aux.getBookTitle() << endl;
 
-		invGotoxy(20,16);
+		invGotoxy(20,18);
 		cout << aux.getStock() << endl;
 
-		invGotoxy(22,9);
+		invGotoxy(26,11);
 		getline(cin, clientName);
 
-		invGotoxy(25,10);
+		invGotoxy(25,12);
 		getline(cin, clientAddress);
 
-		invGotoxy(24,11);
+		invGotoxy(24,13);
 		getline(cin, telefono);
 
-		invGotoxy(19,12);
+		invGotoxy(19,14);
 		getline(cin, nit);
 
-	invalid:
-		invGotoxy(46,13);
-		getline(cin, transaction);
-
-		if(transaction != "v" || transaction != "a"){
-			goto invalid;
-		}else{
-			if(transaction == "v"){
-				invGotoxy(10,15);
-				cout << aux.getPrice() << endl;
-
-				invGotoxy(23,17);
+		invGotoxy(50,15);
+		cin >> transaction;
+		
+		cin.ignore();
+		
+		if(tolower(transaction) == 'v'){
+			invGotoxy(10,17);
+				cout << aux.getPrice() << endl;		
+				
+				invGotoxy(27,19);
 				getline(cin, cantidad);
+				
+				if(cantidad == "" || cantidad == " "){
+					cantidad = "0";
+				}
 
-				invGotoxy(23,18);
+				invGotoxy(40,20);
 				cout << "Es venta" << endl;
 
-				invGotoxy(30,19);
+				invGotoxy(30,21);
 				cout << "hoy" << endl;
 
-				invGotoxy(23,20);
+				invGotoxy(23,22);
 				getline(cin, correo);
-			}else if(transaction == "a"){
-				invGotoxy(10,15);
+				
+		}else if(transaction == 'a'){
+				invGotoxy(10,17);
 				cout << 0.00 << endl;
 
-				invGotoxy(23,17);
+				invGotoxy(27,19);
 				cout << 1 << endl;
+				
+				cantidad = "1";
 
-				invGotoxy(23,18);
+				invGotoxy(40,20);
 				getline(cin, fechaDevolucion);
 
-				invGotoxy(30,19);
+				invGotoxy(30,21);
 				cout << "hoy" << endl;
 
-				invGotoxy(23,20);
+				invGotoxy(23,22);
 				cout << "No aplica debido a prestamo" << endl;
 			}
 
-				invGotoxy(23,23);
-				cout << "No aplica debido a prestamo" << endl;
-
-				invGotoxy(69,23);
-				cout << "No aplica debido a prestamo" << endl;
-
-
-			
-		}
-
+				double grandTotal;
+				int cantidadParsed;
+				
+				invGotoxy(12,25);
+				if(tolower(transaction) == 'v'){
+					
+					std::istringstream (trim(cantidad)) >> cantidadParsed;
+					if(cantidadParsed == 0){
+						grandTotal = 0;
+						cout << 0.00 << endl;	
+					}else{
+						grandTotal = cantidadParsed * aux.getPrice();
+						cout << grandTotal << endl;						
+					}
+				}else{
+					grandTotal = 0;
+					cout << 0.00 << endl;
+				}
+				
+				invGotoxy(64,25);
+				if(tolower(transaction) == 'v'){
+					grandTotal += (grandTotal*0.12);
+					cout << grandTotal << endl;
+				}else{
+					grandTotal = 0;
+					cout << 0.00 << endl;
+				}
+				
+				invGotoxy(29,27);
+				cin >> option;
+				
+				if(tolower(option) == 's'){
+					validateBorrowForm(aux, clientName, clientAddress, telefono, nit, transaction, cantidadParsed, fechaDevolucion, fechaPrestamo, correo, grandTotal, rol);	
+				}else{
+					borrowABook(rol);
+				}
+				
 				
 
-		
-
-
 }
+
+void InventoryModule::validateBorrowForm(Book book, string clientName, string ClientAddress, string telefono, string nit, char transaction, int cantidad, string fechaDevolucion, string fechaPrestamo, string correo, double grandTotal, int rol){
+	
+	bool cn = false;
+	bool cc = false;
+	bool fd = false;
+	int errorCounter = 0;
+	
+	Selling selling = Selling();
+	
+	if(clientName.size() > 0 ) {
+		selling.setClientName(clientName);
+		invGotoxy(82,11);
+		cout << "|  STATUS: CAMPO VALIDO  |" << endl;
+	}else{
+		invGotoxy(0,11);
+		cout << "| Nombre del cliente (*):                                                         |  STATUS: CAMPO VACIO   |" << endl;
+		cn = true;
+		errorCounter += 1;
+	}
+	
+	if(ClientAddress.size() > 0){
+		selling.setClientAddress(ClientAddress);
+	}else{
+		selling.setClientAddress("Ciudad");
+	}
+	
+	
+	if(telefono.size() > 0){
+		selling.setTelefono(telefono);
+	}else{
+		selling.setTelefono("Sin telefono");
+	}
+	
+	if(nit.size() > 0){
+		selling.setNit(nit);
+	}else{
+		selling.setNit("C/F");
+	}
+	
+	
+	selling.setTransaction(std::to_string(transaction));
+	
+	if(cantidad <= book.getStock()){
+		if(cantidad != 0){
+			selling.setCantidad(cantidad);
+			invGotoxy(82,19);
+			cout << "| STATUS: CAMPO VALIDO   |" << endl;	
+		}else{
+			cc = true;
+			errorCounter += 1;
+			invGotoxy(0,19);
+			cout << "| Cantidad solicitada (*):                                                        |  STATUS: CANTIDAD ES 0 |" << endl;
+		}
+		
+	}else{
+		cc = true;
+		errorCounter += 1;
+		invGotoxy(0,19);
+		cout << "| Cantidad solicitada (*):                                                        |  STATUS: STOCK EXCEDIDO|" << endl;
+	}
+	
+	if(transaction == 'v'){
+		selling.setFechaDevolucion("Sin fecha debido a venta");
+		invGotoxy(0,20);
+		cout << "| Fecha de devolucion (si es alquiler): Sin fecha debido a ser venta              |  STATUS: CAMPO VALIDO  |" << endl;
+	}else{
+		if(fechaDevolucion.size() > 0){
+			selling.setFechaDevolucion(fechaDevolucion);
+			invGotoxy(82,20);
+			cout << "|  STATUS: CAMPO VALIDO  |" << endl;
+		}else{
+			fd = true;
+			errorCounter += 1;
+			invGotoxy(0,20);
+			cout << "| Fecha de devolucion (si es alquiler):                                           |  STATUS: SIN FECHA     |" << endl;
+		}	
+	}
+	
+	
+	
+	if(fechaPrestamo.size() > 0){
+		selling.setFechaPrestamo(fechaPrestamo);
+	}else{
+		selling.setFechaPrestamo("");
+	}
+	
+	
+	if(correo.size() > 0){
+		selling.setCorreo(correo);
+	}else{
+		selling.setCorreo("Sin correo Registrado");
+	}
+	
+	selling.setGrandTotal(grandTotal);
+	selling.setRentBook(book);
+	
+	if(errorCounter > 0){
+		fixFormBorrowData(cn,cc,fd, book, clientName, ClientAddress, telefono, nit, transaction, cantidad, fechaDevolucion, fechaPrestamo, correo, grandTotal, rol);
+	}else{
+		BinFilesHandler bfh = BinFilesHandler();
+		string opt;
+		
+		if(bfh.writeBinacleFile(selling)){
+			
+			vector<Book> aux = bfh.readALLInventory();
+			cin.ignore();
+			for(int x = 0; x < aux.size(); x++){
+				if(book.getBookTitle() == aux[x].getBookTitle()){
+					book.setStock(book.getStock()-cantidad);
+					aux[x] = book;
+					
+					if(bfh.editOnInventory(aux)){
+						invGotoxy(0,27);
+						cout << "| Se proceso la transaccion escriba 'S' para continuar:                                                    |" << endl;
+						invGotoxy(56,27);
+						cin >> opt;
+					}else{
+						invGotoxy(0,27);
+						cout << "| No se ha logrado procesar la transaccion escriba culquier cosa para continuar:                           |" << endl;
+						
+						invGotoxy(81,27);
+						cin >> opt;
+					}
+					if(opt.size() > 0 ){
+						displayAllEntrys(1);
+					}else{
+						displayInventoryModuleOperator();
+					}
+					
+				}else{
+					continue;
+				}
+			}
+			
+		}else{
+			invGotoxy(0,27);
+			cout << "| No se ha logrado procesar la transaccion escriba culquier cosa para continuar:                           |" << endl;
+			
+			invGotoxy(81,27);
+			cin >> opt;
+			
+			if(opt.size() > 0 ){
+				displayInventoryModuleOperator();
+			}else{
+				displayInventoryModuleOperator();
+			}
+		}
+	}
+	
+}
+
+
+void InventoryModule::fixFormBorrowData(bool clientNameb, bool cantidadb, bool fechaDevolucionb, Book book, string clientName, string clientAddress, string telefono, string nit, char transaction, int cantidad, string fechaDevolucion, string fechaPrestamo, string correo, double grandTotal, int rol){
+	
+	string cnFix;
+	string fdFix;
+	int ccFix;
+	
+	cin.ignore();
+	
+	if(clientNameb){
+		invGotoxy(26,11);
+		getline(cin, cnFix);
+	}else{
+		cnFix = clientName;
+	}
+	
+	if(cantidadb){
+		invGotoxy(27,19);
+		cin >> ccFix;
+	}else{
+		ccFix = cantidad;
+	}
+	
+	if(fechaDevolucionb){
+		invGotoxy(23,20);
+		getline(cin, fdFix);
+	}else{
+		fdFix = fechaDevolucion;
+	}
+	
+	char option;
+	
+	invGotoxy(0,27);
+	cout << "| Informacion correcta? S/N:                                                                               |" << endl;
+	
+	invGotoxy(29,27);
+	cin >> option;
+				
+	if(tolower(option) == 's'){
+		validateBorrowForm(book, cnFix, clientAddress, telefono, nit, transaction, ccFix, fdFix, fechaPrestamo, correo, grandTotal, rol);	
+	}else{
+		borrowABook(rol);
+	}
+	
+}
+
+

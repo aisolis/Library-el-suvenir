@@ -61,7 +61,7 @@ void OperatorPanel::displayPanel(){
 
         case 2:{
             InventoryModule im = InventoryModule();
-            im.borrowABook();
+            im.borrowABook(1);
             break;
         }
 

@@ -8,8 +8,8 @@ class MasiveModule
 		void displayModule();
 		void displayMasiveModuleSupervisor();
 	private:
-		void masiveUpload();
-		void masiveDownload();
+		void masiveUpload(int);
+		void masiveDownload(int);
 };
 
 #endif

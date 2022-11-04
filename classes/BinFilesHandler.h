@@ -6,6 +6,7 @@
 
 #include "User.h"
 #include "Book.h"
+#include "Selling.h"
 
 using namespace std;
 
@@ -13,18 +14,24 @@ class BinFilesHandler
 {
 	public:
 		BinFilesHandler();
+		
+		vector<User> readAllUsers();
 		User searchUser(User);
 		bool writeUserFile(User);
+		void cleanUserFile();
+		bool editOnUser(vector<User>);
+		
 		bool writeOnInventory(Book);
 		bool editOnInventory(vector<Book>);
 		vector<Book> readALLInventory();
 		void cleanFile();
+		
 		bool masiveBulk();
 		void copytemplate();
 		bool downloadInventory();
-		vector<User> readAllUsers();
-		void cleanUserFile();
-		bool editOnUser(vector<User>);
+		
+		bool writeBinacleFile(Selling);
+		vector<Selling> readAllBinacle();
 	private:
 		verifyHash(string);
 		vector<Book> readMasiveBulkCsv();

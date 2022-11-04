@@ -515,3 +515,26 @@ bool BinFilesHandler::downloadInventory(){
 	
 	return true;
 }
+
+
+
+
+bool BinFilesHandler::writeBinacleFile(Selling sell){
+
+	try{
+		ofstream fh("libraryFiles\\binacle.bin", ios::app);
+		if(fh.is_open()){
+			Book aux = sell.GetRentBook();
+			fh << "" << sell.getClientName() << "," << sell.getClientAddress() << "," << sell.getTelefono() << "," << sell.getNit() << "," << sell.getTransaction() << "," << aux.getBookTitle() << "," << aux.getPrice() << "," << sell.getCantidad() << "," << sell.getFechaDevolucion() << "," << sell.getFechaPrestamo() << "," << sell.getCorreo() << endl;
+			fh.close();
+			return true;
+		}else{
+			throw (999);
+		}	
+
+	}catch(bool ex){
+		return false;
+	}
+
+	return true;
+}

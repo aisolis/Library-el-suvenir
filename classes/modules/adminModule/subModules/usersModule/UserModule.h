@@ -14,7 +14,7 @@ class UserModule
 		void displayModule();
 		void addNewUsers();
 		void updateUsers();
-		void displayUsers();
+		void displayUsers(int);
 		void deleteUsers();
 
 		void displayModuleSupervisor();

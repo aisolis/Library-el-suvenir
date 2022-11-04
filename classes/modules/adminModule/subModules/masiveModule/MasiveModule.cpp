@@ -35,7 +35,7 @@ void MasiveModule::displayMasiveModuleSupervisor(){
 		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 		cout << "|                                                MODULO DE MASIVOS                                                    |" << endl;
 		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
-		cout << "| Bienvenido nuevamente estimado Administrador                                                                        |" << endl;
+		cout << "| Bienvenido nuevamente estimado Supervisor                                                                           |" << endl;
 		cout << "| Por favor elija una opcion del siguiente menu:                                                                      |" << endl;
 		cout << "|                                                                                                                     |" << endl;
 		cout << "| 1) Carga masiva de inventario                                                                                       |" << endl;
@@ -58,12 +58,12 @@ void MasiveModule::displayMasiveModuleSupervisor(){
 		
 		switch(optionMenu){
 			case 1:{
-				masiveUpload();
+				masiveUpload(2);
 				break;
 			}
 
 			case 2:{
-				masiveDownload();
+				masiveDownload(2);
 				break;
 			}
 			
@@ -115,12 +115,12 @@ void MasiveModule::displayModule(){
 		
 		switch(optionMenu){
 			case 1:{
-				masiveUpload();
+				masiveUpload(3);
 				break;
 			}
 
 			case 2:{
-				masiveDownload();
+				masiveDownload(3);
 				break;
 			}
 			
@@ -140,14 +140,14 @@ void MasiveModule::displayModule(){
 	masiveGotoxy(0,30);
 }
 
-void MasiveModule::masiveUpload(){
+void MasiveModule::masiveUpload(int rol){
 system("CLS");
 	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 	cout << "|                                                BIBLIOTECA EL PORVENIR                                               |" << endl;
 	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 	cout << "|                                        MODULO DE MASIVOS CARGA MASIVA DE DATOS                                      |" << endl;
 	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
-	cout << "| Bienvenido nuevamente estimado Administrador                                                                        |" << endl;
+	cout << "| Bienvenido nuevamente estimado usuario                                                                              |" << endl;
 	cout << "| Instrucciones de uso:                                                                                               |" << endl;
 	cout << "|                                                                                                                     |" << endl;
 	cout << "| 1) Se abrira la carpeta en la cual se contiene un template para la carga masiva                                     |" << endl;
@@ -199,9 +199,18 @@ system("CLS");
 			
 			if(opt2 == "aceptar"){
 				InventoryModule im = InventoryModule();
-				im.displayAllEntrys();
+				im.displayAllEntrys(rol);
 			}else{
-				displayModule();
+				switch(rol){
+					case 2:{
+						displayMasiveModuleSupervisor();
+						break;
+					}
+					case 3:{
+						displayModule();	
+						break;
+					}
+				}
 			}
 		}else{
 			masiveGotoxy(0,22);
@@ -219,25 +228,52 @@ system("CLS");
 			});
 			
 			if(opt2 == "aceptar"){
-				displayModule();
+				switch(rol){
+					case 2:{
+						displayMasiveModuleSupervisor();
+						break;
+					}
+					case 3:{
+						displayModule();	
+						break;
+					}
+				}
 			}else{
-				displayModule();
+				switch(rol){
+					case 2:{
+						displayMasiveModuleSupervisor();
+						break;
+					}
+					case 3:{
+						displayModule();	
+						break;
+					}
+				}
 			}
 		}	
 	}else{
-		displayModule();
+		switch(rol){
+					case 2:{
+						displayMasiveModuleSupervisor();
+						break;
+					}
+					case 3:{
+						displayModule();	
+						break;
+					}
+				}
 	}
 		
 }
 
-void MasiveModule::masiveDownload(){
+void MasiveModule::masiveDownload(int rol){
 	system("CLS");
 	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 	cout << "|                                                BIBLIOTECA EL PORVENIR                                               |" << endl;
 	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 	cout << "|                                        MODULO DE MASIVOS DESCARGA MASIVA DE DATOS                                   |" << endl;
 	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
-	cout << "| Bienvenido nuevamente estimado Administrador                                                                        |" << endl;
+	cout << "| Bienvenido nuevamente estimado                                                                                      |" << endl;
 	cout << "| Instrucciones de uso:                                                                                               |" << endl;
 	cout << "|                                                                                                                     |" << endl;
 	cout << "| 1) Se realizara un backup del inventario actual en formato CSV                                                      |" << endl;
@@ -288,9 +324,18 @@ void MasiveModule::masiveDownload(){
 			
 			if(opt2 == "aceptar"){
 				InventoryModule im = InventoryModule();
-				im.displayAllEntrys();
+				im.displayAllEntrys(rol);
 			}else{
-				displayModule();
+				switch(rol){
+					case 2:{
+						displayMasiveModuleSupervisor();
+						break;
+					}
+					case 3:{
+						displayModule();	
+						break;
+					}
+				}
 			}
 		}else{
 			masiveGotoxy(0,22);
@@ -308,12 +353,39 @@ void MasiveModule::masiveDownload(){
 			});
 			
 			if(opt2 == "aceptar"){
-				displayModule();
+				switch(rol){
+					case 2:{
+						displayMasiveModuleSupervisor();
+						break;
+					}
+					case 3:{
+						displayModule();	
+						break;
+					}
+				}
 			}else{
-				displayModule();
+				switch(rol){
+					case 2:{
+						displayMasiveModuleSupervisor();
+						break;
+					}
+					case 3:{
+						displayModule();	
+						break;
+					}
+				}
 			}
 		}	
 	}else{
-		displayModule();
+		switch(rol){
+					case 2:{
+						displayMasiveModuleSupervisor();
+						break;
+					}
+					case 3:{
+						displayModule();	
+						break;
+					}
+				}
 	}
 }
