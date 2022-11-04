@@ -15,6 +15,7 @@ class Book
 		
 		void setBookTitle(string);
 		string getBookTitle();
+		string getConstBookTitle() const;
 		
 		void setAutor(string);
 		string getAutor();
@@ -37,6 +38,7 @@ class Book
 		
 		void setPrice(double);
 		double getPrice();
+		double getConstPrice() const;
 		
 		void setStock(int);
 		int getStock();

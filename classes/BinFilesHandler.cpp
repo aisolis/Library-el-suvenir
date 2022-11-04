@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <ctime>
 
 #include "BinFilesHandler.h"
 #include "User.h"
@@ -350,6 +351,7 @@ vector<Book> BinFilesHandler::readMasiveBulkCsv(){
 		int c = 0;
 		int w = 0;
 		int z = 0;
+		
 		vector<Book> aux = readALLInventory();
 		infile.open("libraryFiles\\masiveBulk\\template.csv", ios::in);
 		
@@ -536,7 +538,7 @@ bool BinFilesHandler::writeBinacleFile(Selling sell){
 		ofstream fh("libraryFiles\\binacle.bin", ios::app);
 		if(fh.is_open()){
 			Book aux = sell.GetRentBook();
-			fh << "" << sell.getClientName() << "," << sell.getClientAddress() << "," << sell.getTelefono() << "," << sell.getNit() << "," << sell.getTransaction() << "," << aux.getBookTitle() << "," << aux.getPrice() << "," << sell.getCantidad() << "," << sell.getFechaDevolucion() << "," << sell.getFechaPrestamo() << "," << sell.getCorreo() << endl;
+			fh << "" << sell.getClientName() << "," << sell.getClientAddress() << "," << sell.getTelefono() << "," << sell.getNit() << "," << sell.getTransaction() << "," << aux.getBookTitle() << "," << sell.getGrandTotal() << "," << sell.getCantidad() << "," << sell.getFechaDevolucion() << "," << sell.getFechaPrestamo() << "," << sell.getCorreo() << endl;
 			fh.close();
 			return true;
 		}else{
@@ -549,3 +551,266 @@ bool BinFilesHandler::writeBinacleFile(Selling sell){
 
 	return true;
 }
+
+
+vector<Selling> BinFilesHandler::listAllSellings(){
+	vector<Selling> sellings;
+	try{
+		ifstream infile;
+		string line = "";
+		int c = 0;
+		int w = 0;
+
+		infile.open("libraryFiles\\binacle.bin", ios::in);
+		
+		while(getline(infile,line)){
+			w++;
+			c=0;
+			
+			stringstream strstr(line);	
+			string word="";
+			
+			Selling selling = Selling();
+			
+			while(getline(strstr, word, ',')){
+				c++;
+				switch(c){
+					case 1:{
+						selling.setClientName(word);
+						break;
+					}
+					case 2:{
+						selling.setClientAddress(word);
+						break;
+					}
+					case 3:{
+						selling.setTelefono(word);
+						break;
+					}
+					case 4:{
+						selling.setNit(word);
+						break;
+					}
+					case 5:{
+						selling.setTransaction(word);
+						break;
+					}
+					case 6:{
+						Book auxB = Book();
+						auxB.setBookTitle(word);
+						selling.setRentBook(auxB);
+						break;
+					}
+					case 7:{	
+						double price;
+						price = std::stod(word);
+						selling.setGrandTotal(price);
+						break;
+					}
+					case 8:{
+						int cantidadParsed;
+						std::istringstream (word) >> cantidadParsed;
+						selling.setCantidad(cantidadParsed);
+						break;
+					}
+					case 9:{
+						selling.setFechaDevolucion(word);
+						break;
+					}
+					case 10:{
+						selling.setFechaPrestamo(word);
+						break;
+					}
+					case 11:{
+						selling.setCorreo(word);
+						break;
+					}
+					default:{
+						break;
+					}
+				}
+			}
+			sellings.push_back(selling);
+		}
+		
+		return sellings;
+	}catch(bool ex){
+		return sellings;
+	}
+}
+
+/*****************************************************/
+//            Reports
+/*****************************************************/
+
+
+void BinFilesHandler::generateInventoryReportByAutorAndBookTitle(){
+	try{
+		time_t now = time(0);
+		tm * time = localtime(&now);
+		int year = 1900 + time->tm_year;
+		
+		string fileName = "generated-" + std::to_string(time->tm_mday) + "-" + std::to_string(time->tm_mon) + "-" + std::to_string(year);
+		
+		string command = "MKDIR Reports\\" + fileName;
+		system(command.c_str());
+		
+		string command2 = "copy template\\generateInventoryReportByAutorAndBookTitle.html Reports\\" + fileName;
+		system(command2.c_str());
+		
+		ofstream fh("Reports\\"+fileName+"\\generateInventoryReportByAutorAndBookTitle.html", ios::app);
+		
+		vector<Book> books =  readALLInventory();
+		
+		if(fh.is_open()){
+			for(int z = 0; z < books.size();z++){	
+				fh << "<tr><td>" << books[z].getBookTitle() << "</td><td>" <<  books[z].getAutor() << "</td></tr>" << std::endl;
+			}	
+			fh << "<tr><th>" << "TOTAL DE LIBROS EN EL SISTEMA: " << "</td><th>" <<  books.size() << "</th></tr>" << std::endl;		
+			fh << "</table></body></html>" << endl;
+			fh.close();
+		}else{
+			throw (999);
+		}	
+			
+
+	}catch(bool ex){
+	}
+}
+
+
+void BinFilesHandler::generateInventoryReportByBookTitleSorted(){
+	try{
+		time_t now = time(0);
+		tm * time = localtime(&now);
+		int year = 1900 + time->tm_year;
+		
+		string fileName = "generated-" + std::to_string(time->tm_mday) + "-" + std::to_string(time->tm_mon) + "-" + std::to_string(year);
+		
+		string command = "MKDIR Reports\\" + fileName;
+		system(command.c_str());
+		
+		string command2 = "copy template\\generateInventoryReportByBookTitleSorted.html Reports\\" + fileName;
+		system(command2.c_str());
+		
+		ofstream fh("Reports\\"+fileName+"\\generateInventoryReportByBookTitleSorted.html", ios::app);
+		
+		vector<Book> books =  readALLInventory();
+		sort(books.begin(), books.end(), [](const Book& bookA, const Book& bookB){
+			return bookA.getConstBookTitle() < bookB.getConstBookTitle();
+		});
+		
+		if(fh.is_open()){
+			for(int z = 0; z < books.size();z++){	
+				fh << "<tr><td>" << books[z].getBookTitle() << "</td><td>" <<  books[z].getAutor() << "</td></tr>" << std::endl;
+			}	
+			fh << "<tr><th>" << "TOTAL DE LIBROS EN EL SISTEMA: " << "</td><th>" <<  books.size() << "</th></tr>" << std::endl;		
+			fh << "</table></body></html>" << endl;
+			fh.close();
+		}else{
+			throw (999);
+		}	
+			
+
+	}catch(bool ex){
+	}
+}
+
+
+void BinFilesHandler::generateInventoryReportByPrice(){
+	try{
+		time_t now = time(0);
+		tm * time = localtime(&now);
+		int year = 1900 + time->tm_year;
+		
+		string fileName = "generated-" + std::to_string(time->tm_mday) + "-" + std::to_string(time->tm_mon) + "-" + std::to_string(year);
+		
+		string command = "MKDIR Reports\\" + fileName;
+		system(command.c_str());
+		
+		string command2 = "copy template\\generateInventoryReportByPrice.html Reports\\" + fileName;
+		system(command2.c_str());
+		
+		ofstream fh("Reports\\"+fileName+"\\generateInventoryReportByPrice.html", ios::app);
+		
+		vector<Book> books =  readALLInventory();
+		
+		sort(books.begin(), books.end(), [](Book bookA, Book bookB){		
+			return bookA.getPrice() < bookB.getPrice();		
+		});
+		
+		if(fh.is_open()){
+			for(int z = 0; z < books.size();z++){	
+				fh << "<tr><td>" << books[z].getBookTitle() << "</td><td>" <<  books[z].getAutor() << "</td><td>" << books[z].getCategory() << "</td><td>" <<  books[z].getLinealDescription() << "</td><td>" <<  books[z].getEditorial() << "</td><td>" <<  books[z].getPublicationYear() << "</td><td>" <<  books[z].getPagesNumbers() << "</td><td>" << books[z].getPrice() << "</td><td>" << books[z].getStock() << "</td></tr>" << std::endl;
+			}	
+			fh << "<tr><th>" << "TOTAL DE LIBROS EN EL SISTEMA: " << "</td><th>" <<  books.size() << "</th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th></tr>" << std::endl;		
+			fh << "</table></body></html>" << endl;
+			fh.close();
+		}else{
+			throw (999);
+		}	
+			
+
+	}catch(bool ex){
+	}
+}
+
+
+void BinFilesHandler::generateInventoryReportBySellings(){
+	try{
+		time_t now = time(0);
+		tm * time = localtime(&now);
+		int year = 1900 + time->tm_year;
+		
+		string fileName = "generated-" + std::to_string(time->tm_mday) + "-" + std::to_string(time->tm_mon) + "-" + std::to_string(year);
+		
+		string command = "MKDIR Reports\\" + fileName;
+		system(command.c_str());
+		
+		string command2 = "copy template\\generateInventoryReportBySellings.html Reports\\" + fileName;
+		system(command2.c_str());
+		
+		ofstream fh("Reports\\"+fileName+"\\generateInventoryReportBySellings.html", ios::app);
+		
+		vector<Selling> sellings =  listAllSellings();
+		
+		if(fh.is_open()){
+			for(int z = 0; z < sellings.size();z++){	
+				Book aux = sellings[z].GetRentBook();
+				fh << "<tr><td>" << sellings[z].getClientName() << "</td><td>" << sellings[z].getClientAddress() << "</td><td>" << sellings[z].getTelefono() << "</td><td>" << sellings[z].getNit() << "</td><td>" << sellings[z].getTransaction() << "</td><td>" << aux.getBookTitle() << "</td><td>" << sellings[z].getGrandTotal() << "</td><td>" << sellings[z].getCantidad() << "</td><td>" << sellings[z].getFechaPrestamo() << "</td><td>" << sellings[z].getFechaDevolucion() << "</td><td>" << sellings[z].getCorreo() << "</td></tr>" << std::endl;
+			}	
+			fh << "<tr><th>" << "TOTAL DE VENTAS/ALQUILERES EN EL SISTEMA: " << "</td><th>" <<  sellings.size() << "</th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> <th> </th> </tr>" << std::endl;		
+			fh << "</table></body></html>" << endl;
+			fh.close();
+		}else{
+			throw (999);
+		}	
+			
+
+	}catch(bool ex){
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

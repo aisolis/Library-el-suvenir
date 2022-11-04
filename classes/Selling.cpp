@@ -60,7 +60,7 @@ string Selling::getNit(){
 
 
 void Selling::setTransaction(string t){
-	if(t == "v"){
+	if(t == "118"){
 		Selling::transaction = "Venta";
 	}else{
 		Selling::transaction = "Alquiler";

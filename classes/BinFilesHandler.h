@@ -31,8 +31,14 @@ class BinFilesHandler
 		bool downloadInventory();
 		
 		bool writeBinacleFile(Selling);
-		vector<Selling> readAllBinacle();
+		vector<Selling> listAllSellings();
+		
+		void generateInventoryReportByAutorAndBookTitle();
+		void generateInventoryReportByBookTitleSorted();
+		void generateInventoryReportByPrice();
+		void generateInventoryReportBySellings();
 	private:
+		bool compareByAuthor(const Book& a, const Book& b);
 		verifyHash(string);
 		vector<Book> readMasiveBulkCsv();
 		

@@ -35,6 +35,10 @@ string Book::getBookTitle(){
 	return Book::bookTitle;
 }
 
+string Book::getConstBookTitle() const {
+	return Book::bookTitle;
+}
+
 void Book::setAutor(string name){
 	Book::autor = name;
 }
@@ -101,6 +105,11 @@ void Book::setPrice(double _price){
 double Book::getPrice(){
 	return Book::price;
 }
+
+double Book::getConstPrice() const{
+	return Book::price;
+}
+
 
 void Book::setStock(int _stock){
 	Book::stock = _stock;

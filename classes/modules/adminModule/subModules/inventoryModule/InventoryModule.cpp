@@ -1684,6 +1684,7 @@ void InventoryModule::displayBorrowScreen(vector<Book> books, int index, int rol
 						cout << grandTotal << endl;						
 					}
 				}else{
+					std::istringstream (trim(cantidad)) >> cantidadParsed;
 					grandTotal = 0;
 					cout << 0.00 << endl;
 				}
