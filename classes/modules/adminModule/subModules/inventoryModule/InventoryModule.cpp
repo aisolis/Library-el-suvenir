@@ -1728,7 +1728,7 @@ void InventoryModule::displayBorrowScreen(vector<Book> books, int index, int rol
 				cin >> option;
 				
 				if(tolower(option) == 's'){
-					validateBorrowForm(aux, clientName, clientAddress, telefono, nit, transaction, cantidadParsed, fechaDevolucion, fechaPrestamo, correo, grandTotal, rol);	
+					validateBorrowForm(aux, clientName, clientAddress, telefono, nit, transaction, std::to_string(cantidadParsed), fechaDevolucion, fechaPrestamo, correo, grandTotal, rol);	
 				}else{
 					borrowABook(rol);
 				}
@@ -1737,7 +1737,7 @@ void InventoryModule::displayBorrowScreen(vector<Book> books, int index, int rol
 
 }
 
-void InventoryModule::validateBorrowForm(Book book, string clientName, string ClientAddress, string telefono, string nit, char transaction, int cantidad, string fechaDevolucion, string fechaPrestamo, string correo, double grandTotal, int rol){
+void InventoryModule::validateBorrowForm(Book book, string clientName, string ClientAddress, string telefono, string nit, char transaction, string cantidad, string fechaDevolucion, string fechaPrestamo, string correo, double grandTotal, int rol){
 	
 	bool cn = false;
 	bool cc = false;
@@ -1779,9 +1779,12 @@ void InventoryModule::validateBorrowForm(Book book, string clientName, string Cl
 	
 	selling.setTransaction(std::to_string(transaction));
 	
-	if(cantidad <= book.getStock()){
-		if(cantidad != 0){
-			selling.setCantidad(cantidad);
+	int parseCc;
+	std::istringstream (trim(cantidad)) >> parseCc;
+	
+	if(parseCc <= book.getStock()){
+		if(parseCc != 0){
+			selling.setCantidad(parseCc);
 			invGotoxy(82,19);
 			cout << "| STATUS: CAMPO VALIDO   |" << endl;	
 		}else{
@@ -1830,7 +1833,18 @@ void InventoryModule::validateBorrowForm(Book book, string clientName, string Cl
 		selling.setCorreo("Sin correo Registrado");
 	}
 	
-	selling.setGrandTotal(grandTotal);
+	
+	if(parseCc > 0){
+		grandTotal = parseCc + (parseCc*0.12);
+		selling.setGrandTotal(grandTotal);
+		invGotoxy(12,25);
+		cout << parseCc << endl;
+		
+		invGotoxy(64,25);
+		cout << grandTotal << endl;
+	}
+	
+	
 	selling.setRentBook(book);
 	
 	if(errorCounter > 0){
@@ -1845,7 +1859,7 @@ void InventoryModule::validateBorrowForm(Book book, string clientName, string Cl
 			cin.ignore();
 			for(int x = 0; x < aux.size(); x++){
 				if(book.getBookTitle() == aux[x].getBookTitle()){
-					book.setStock(book.getStock()-cantidad);
+					book.setStock(book.getStock()-parseCc);
 					aux[x] = book;
 					
 					if(bfh.editOnInventory(aux)){
@@ -1889,11 +1903,11 @@ void InventoryModule::validateBorrowForm(Book book, string clientName, string Cl
 }
 
 
-void InventoryModule::fixFormBorrowData(bool clientNameb, bool cantidadb, bool fechaDevolucionb, Book book, string clientName, string clientAddress, string telefono, string nit, char transaction, int cantidad, string fechaDevolucion, string fechaPrestamo, string correo, double grandTotal, int rol){
+void InventoryModule::fixFormBorrowData(bool clientNameb, bool cantidadb, bool fechaDevolucionb, Book book, string clientName, string clientAddress, string telefono, string nit, char transaction, string cantidad, string fechaDevolucion, string fechaPrestamo, string correo, double grandTotal, int rol){
 	
 	string cnFix;
 	string fdFix;
-	int ccFix;
+	string ccFix;
 	
 	cin.ignore();
 	
@@ -1906,7 +1920,7 @@ void InventoryModule::fixFormBorrowData(bool clientNameb, bool cantidadb, bool f
 	
 	if(cantidadb){
 		invGotoxy(27,19);
-		cin >> ccFix;
+		getline(cin,ccFix);
 	}else{
 		ccFix = cantidad;
 	}

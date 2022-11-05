@@ -32,8 +32,8 @@ class InventoryModule
 		int indexvector;
 		void throwAlert(vector<Book>, int, int);
 		void displayBorrowScreen(vector<Book>, int, int);
-		void validateBorrowForm(Book, string, string, string, string, char, int, string, string, string, double, int);
-		void fixFormBorrowData(bool, bool, bool, Book, string, string, string, string, char, int, string, string, string, double, int);
+		void validateBorrowForm(Book, string, string, string, string, char, string, string, string, string, double, int);
+		void fixFormBorrowData(bool, bool, bool, Book, string, string, string, string, char, string, string, string, string, double, int);
 };
 
 #endif
