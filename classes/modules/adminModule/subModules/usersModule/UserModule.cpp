@@ -190,10 +190,10 @@ void UserModule::addNewUsers(){
 			"|                                                                        |                            |\n"
 			"|                               Roles disponibles                        |                            |\n"
 			"|                                                                        |                            |\n"
-			"|             0) Operador     1) supervisor   2) Administrador           |                            |\n"
+			"|             1) Operador     2) supervisor   3) Administrador           |                            |\n"
 			"|                                                                        |                            |\n"
 			"| Nombre de usuario:                                                     | STATUS:                    |\n"
-			"| Contrase�a:                                                            | STATUS:                    |\n"
+			"| Contrasenia:                                                           | STATUS:                    |\n"
 			"| Rol:                                                                   | STATUS:                    |\n"
 			"|                                                                        |                            |\n"
 			"+------------------------------------------------------------------------+----------------------------+\n"
@@ -206,7 +206,7 @@ void UserModule::addNewUsers(){
 	userGotoxy(21,14);
 	getline(cin, usuario);
 	
-	userGotoxy(14,15);
+	userGotoxy(15,15);
 	getline(cin, password);
 	
 	userGotoxy(7,16);

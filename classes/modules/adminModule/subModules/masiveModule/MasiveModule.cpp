@@ -50,7 +50,7 @@ void MasiveModule::displayMasiveModuleSupervisor(){
 		cout << "| Su opcion:                                                                                                          |" << endl;	
 		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
 
-		masiveGotoxy(13,18);
+		masiveGotoxy(13,17);
 		cin >> parser;
 
 
